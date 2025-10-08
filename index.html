@@ -184,7 +184,7 @@
       min-width: 0;
     }
 
-    .listado table {
+  .listado table {
       width: 100%;
       min-width: 900px;
       border-collapse: separate;
@@ -195,6 +195,40 @@
       background: #fff;
       table-layout: auto;
       word-break: break-word;
+    }
+    .listado th, .listado td {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 180px;
+      vertical-align: middle;
+      border: 1px solid #e5e7eb;
+    }
+    .listado tbody tr:nth-child(even) {
+      background: #f3f4f6;
+    }
+    .listado tbody tr:nth-child(odd) {
+      background: #e5e7eb;
+    }
+    .listado thead tr {
+      background: var(--azul-institucional);
+    }
+    .listado td {
+      font-size: 0.98em;
+      padding-top: 0.7em;
+      padding-bottom: 0.7em;
+    }
+    @media (max-width: 1200px) {
+      .listado th, .listado td {
+        max-width: 120px;
+        font-size: 0.95em;
+      }
+    }
+    @media (max-width: 900px) {
+      .listado th, .listado td {
+        max-width: 80px;
+        font-size: 0.92em;
+      }
     }
     @media (max-width: 1200px) {
       .listado {
@@ -244,25 +278,30 @@
 
   <div class="container">
     <div id="inicio" class="carpetas-container">
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Centros Educativos</h3><p>Listado de Centros Educativos.</p><button onclick="abrirListado('CENTRO EDUCATIVO')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Jornada Extendida</h3><p>Listado de Escuelas de Jornada Extendida.</p><button onclick="abrirListado('ESCUELA DE JORNADA EXTENDIDA')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Institutos Experimentales Educativos</h3><p>Listado de Institutos Experimentales Educativos.</p><button onclick="abrirListado('INSTITUTO EXPERIMENTAL EDUCATIVO')">Abrir Listado</button></div>
-      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Institutos</h3><p>Listado de Institutos Provinciales.</p><button onclick="abrirListado('INSTITUTO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Centros Educativos</h3><p>Listado de Centros Educativos.</p><button onclick="abrirListado('CENTRO EDUCATIVO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas de Jornada Extendida</h3><p>Listado de Escuelas de Jornada Extendida.</p><button onclick="abrirListado('ESCUELA DE JORNADA EXTENDIDA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Institutos Experimentales Educativos</h3><p>Listado de Institutos Experimentales Educativos.</p><button onclick="abrirListado('INSTITUTO EXPERIMENTAL EDUCATIVO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta"></div><h3>Institutos</h3><p>Listado de Institutos Provinciales.</p><button onclick="abrirListado('INSTITUTO')">Abrir Listado</button></div>
     </div>
 
     <section id="listado" class="listado">
-      <div style="background: #ffe031; color: #7c5700; font-weight: bold; border-radius: 8px; padding: 0.7em 1.2em; margin-bottom: 1.2em; text-align: center; font-size: 1.05em; letter-spacing: 0.5px;">
-        Base De Datos: GESTION  EDUCATIVA 3.0
-      </div>
+      <div id="contadores-listado" style="display: flex; gap: 1.5em; justify-content: flex-start; align-items: center; margin-bottom: 1.2em;">
+  <div style="background: #1B2A41; color: #fff; font-weight: bold; border-radius: 8px; padding: 0.7em 1.2em; font-size: 1.05em; letter-spacing: 0.5px;">
+    Total: <span id="contador-total">0</span>
+  </div>
+  <div style="background: #56B4C6; color: #fff; font-weight: bold; border-radius: 8px; padding: 0.7em 1.2em; font-size: 1.05em; letter-spacing: 0.5px;">
+    Mostrados: <span id="contador-filtrados">0</span>
+  </div>
+</div>
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5em;">
         <h2 id="titulo-listado" style="margin: 0; font-size: 1.4em; text-align: left;"></h2>
         <button onclick="volverInicio()" style="background:#dc2626;color:white;border:none;padding:0.6rem 1.2rem;border-radius:6px;cursor:pointer;">Cerrar</button>
@@ -422,41 +461,48 @@
       const categorias = [...new Set(datosActuales.map(item => item.categoria).filter(Boolean))].sort();
       categoriaSelect.innerHTML = '<option value="">Todas</option>' + categorias.map(c => `<option value="${c}">${c}</option>`).join('');
     }
-
+function actualizarContadores(filtrados) {
+  document.getElementById('contador-total').textContent = datosActuales.length;
+  document.getElementById('contador-filtrados').textContent = filtrados.length;
+}
     function filtrarYMostrar() {
-      const tbody = document.getElementById('tabla-body');
-      const region = document.getElementById('region-select').value;
-      const localidad = document.getElementById('localidad-select').value;
-      const categoria = document.getElementById('categoria-select').value;
-      let filtrados = datosActuales;
-      if (region) {
-        filtrados = filtrados.filter(item => (item.region || '').toUpperCase() === region);
-      }
-      if (localidad) {
-        filtrados = filtrados.filter(item => (item.localidad || '') === localidad);
-      }
-      if (categoria) {
-        filtrados = filtrados.filter(item => (item.categoria || '') === categoria);
-      }
-      if (!filtrados || filtrados.length === 0) {
-        tbody.innerHTML = `<tr><td colspan='11' style='text-align:center;color:#6b7280;'>No se encontraron registros para ${tipoActual}</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = filtrados.map(item => `
-        <tr>
-          <td>${item.sector || ''}</td>
-          <td>${item.categoria || ''}</td>
-          <td>${item.region || ''}</td>
-          <td>${item.denominacion || ''}</td>
-          <td>${item.nro || ''}</td>
-          <td>${item.nombre || ''}</td>
-          <td>${item.localidad || ''}</td>
-          <td>${item.departamento || ''}</td>
-          <td>${item.niveles || ''}</td>
-          <td>${item.modalidad || ''}</td>
-          <td>${item.ambito || ''}</td>
-        </tr>`).join('');
-    }
+  const tbody = document.getElementById('tabla-body');
+  const region = document.getElementById('region-select').value;
+  const localidad = document.getElementById('localidad-select').value;
+  const categoria = document.getElementById('categoria-select').value;
+  let filtrados = datosActuales;
+  if (region) {
+    filtrados = filtrados.filter(item => (item.region || '').toUpperCase() === region);
+  }
+  if (localidad) {
+    filtrados = filtrados.filter(item => (item.localidad || '') === localidad);
+  }
+  if (categoria) {
+    filtrados = filtrados.filter(item => (item.categoria || '') === categoria);
+  }
+
+  // Aquí llamas a la función de contadores
+  actualizarContadores(filtrados);
+
+  if (!filtrados || filtrados.length === 0) {
+    tbody.innerHTML = `<tr><td colspan='11' style='text-align:center;color:#6b7280;'>No se encontraron registros para ${tipoActual}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtrados.map(item => `
+    <tr>
+      <td>${item.sector || ''}</td>
+      <td>${item.categoria || ''}</td>
+      <td>${item.region || ''}</td>
+      <td>${item.denominacion || ''}</td>
+      <td>${item.nro || ''}</td>
+      <td>${item.nombre || ''}</td>
+      <td>${item.localidad || ''}</td>
+      <td>${item.departamento || ''}</td>
+      <td>${item.niveles || ''}</td>
+      <td>${item.modalidad || ''}</td>
+      <td>${item.ambito || ''}</td>
+    </tr>`).join('');
+}
 
     document.addEventListener('DOMContentLoaded', function() {
       const regionSelect = document.getElementById('region-select');

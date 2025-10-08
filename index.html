@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Montserrat Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dirección Gestión Educativa — Establecimientos Estatales</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <style>
+    :root {
+      --azul-institucional: #1B2A41;
+      --celeste: #56B4C6;
+      --fondo-gradiente: linear-gradient(180deg, #5EC5D1 0%, #3A98B2 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      background: var(--fondo-gradiente);
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    th, .etiqueta, .carpeta button, .carpeta h3 {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-weight: 600;
+    }
+
+    /* Si quieres que todo el texto sea semi-bold, descomenta la siguiente línea */
+    /* body, p, td, input, button, span, label { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 600; } */
+
+    header {
+      width: 100%;
+      background: var(--azul-institucional);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img { height: 40px; }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .buscador {
+      background: #fff;
+      padding: 1.2rem 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+    }
+
+    .buscador input {
+      width: 75%;
+      max-width: 600px;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    .buscador input:focus {
+      border-color: var(--celeste);
+      box-shadow: 0 0 8px rgba(86, 180, 198, 0.5);
+      outline: none;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .carpetas-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      padding: 3rem 0;
+    }
+
+    .carpeta {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      position: relative;
+      line-height: 1.6;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(40px);
+      min-height: 260px;
+      height: 100%;
+      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .carpeta.enter {
+      animation: slideUp 0.7s ease forwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .carpeta:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .etiqueta {
+      position: absolute;
+      top: -16px;
+      left: 24px;
+      background: #5EC5D1;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .carpeta h3 { color: #1f2937; font-weight: 700; font-size: 1.3rem; margin-top: 1rem; }
+    .carpeta p { color: #374151; font-size: 0.95rem; margin-top: 0.5rem; }
+
+    .carpeta button {
+      margin-top: 1rem;
+      background: var(--celeste);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.4rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .carpeta button:hover { background: #3A98B2; }
+
+    .listado {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 1.5rem 1.2rem 2rem 1.2rem;
+      overflow-x: auto;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    .listado table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(86,180,198,0.07);
+      background: #fff;
+      table-layout: auto;
+      word-break: break-word;
+    }
+    @media (max-width: 1200px) {
+      .listado {
+        max-width: 98vw;
+        padding: 1rem 0.5rem;
+      }
+      .listado table {
+        min-width: 700px;
+        font-size: 0.97em;
+      }
+    }
+    @media (max-width: 900px) {
+      .listado {
+        max-width: 100vw;
+        padding: 0.5rem 0.1rem;
+        border-radius: 10px;
+      }
+      .listado table {
+        min-width: 400px;
+        font-size: 0.93em;
+      }
+    }
+
+    th, td {
+      padding: 0.8rem;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    th { background: var(--azul-institucional); color: white; }
+
+    @media (max-width: 992px) { .carpetas-container { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); } }
+    @media (max-width: 600px) { .carpetas-container { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <img src="LOGO - MINISTERIO_032459.png" alt="Logo San Luis - Ministerio de Educación" />
+  <h1><b>Dirección Gestión Educativa</b><br><span style="font-size:1rem; font-weight:300;">Establecimientos Estatales</span></h1>
+    </div>
+  </header>
+
+  <div class="buscador">
+    <input type="text" id="buscador" placeholder="Buscar carpeta o categoría..." onkeyup="buscarElemento()">
+  </div>
+
+  <div class="container">
+    <div id="inicio" class="carpetas-container">
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Centros Educativos</h3><p>Listado de Centros Educativos.</p><button onclick="abrirListado('CENTRO EDUCATIVO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Jornada Extendida</h3><p>Listado de Escuelas de Jornada Extendida.</p><button onclick="abrirListado('ESCUELA DE JORNADA EXTENDIDA')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Institutos Experimentales Educativos</h3><p>Listado de Institutos Experimentales Educativos.</p><button onclick="abrirListado('INSTITUTO EXPERIMENTAL EDUCATIVO')">Abrir Listado</button></div>
+      <div class="carpeta"><div class="etiqueta">OBRA PÚBLICA</div><h3>Institutos</h3><p>Listado de Institutos Provinciales.</p><button onclick="abrirListado('INSTITUTO')">Abrir Listado</button></div>
+    </div>
+
+    <section id="listado" class="listado">
+      <div style="background: #ffe031; color: #7c5700; font-weight: bold; border-radius: 8px; padding: 0.7em 1.2em; margin-bottom: 1.2em; text-align: center; font-size: 1.05em; letter-spacing: 0.5px;">
+        Base De Datos: GESTION  EDUCATIVA 3.0
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5em;">
+        <h2 id="titulo-listado" style="margin: 0; font-size: 1.4em; text-align: left;"></h2>
+        <button onclick="volverInicio()" style="background:#dc2626;color:white;border:none;padding:0.6rem 1.2rem;border-radius:6px;cursor:pointer;">Cerrar</button>
+      </div>
+      <div class="filtros-listado">
+        <div class="filtro-item">
+          <span class="filtro-icon"></span>
+          <label for="region-select">Región</label>
+          <select id="region-select">
+            <option value="">Todas</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+          </select>
+        </div>
+        <div class="filtro-item">
+          <span class="filtro-icon"></span>
+          <label for="localidad-select">Localidad</label>
+          <select id="localidad-select">
+            <option value="">Todas</option>
+          </select>
+        </div>
+        <div class="filtro-item">
+          <span class="filtro-icon"></span>
+          <label for="categoria-select">Categoría</label>
+          <select id="categoria-select">
+            <option value="">Todas</option>
+          </select>
+        </div>
+      </div>
+  <style>
+    .filtros-listado {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2em;
+      margin-bottom: 1.2em;
+      justify-content: flex-start;
+      align-items: center;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1em 1.5em;
+      box-shadow: 0 2px 8px rgba(86,180,198,0.07);
+    }
+    .filtro-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      background: #fff;
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 4px rgba(86,180,198,0.08);
+      font-size: 1em;
+      margin-bottom: 0.2em;
+    }
+    .filtro-item label {
+      font-weight: 600;
+      color: #1B2A41;
+      margin-right: 0.2em;
+      font-size: 1em;
+    }
+    .filtro-item select {
+      font-size: 1em;
+      padding: 0.3em 1.2em 0.3em 0.7em;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #f1f5f9;
+      color: #1B2A41;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      transition: border 0.2s;
+      outline: none;
+    }
+    .filtro-item select:focus {
+      border: 1.5px solid #56B4C6;
+      background: #fff;
+    }
+    .filtro-icon {
+      font-size: 1.2em;
+      margin-right: 0.2em;
+    }
+    @media (max-width: 700px) {
+      .filtros-listado {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.7em 0.5em;
+      }
+      .filtro-item {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+      <table>
+        <thead>
+          <tr>
+            <th>Sector</th>
+            <th>Categoría</th>
+            <th>Región</th>
+            <th>Denominación</th>
+            <th>N°</th>
+            <th>Nombre</th>
+            <th>Localidad</th>
+            <th>Departamento</th>
+            <th>Niveles</th>
+            <th>Modalidad</th>
+            <th>Ámbito</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body"><tr><td colspan='11' style='text-align:center;color:#6b7280;'>Seleccione una carpeta para ver los establecimientos.</td></tr></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    const supabaseUrl = 'https://csbcfhwdpstnofvsfqwh.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzYmNmaHdkcHN0bm9mdnNmcXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjkzODcsImV4cCI6MjA3MTcwNTM4N30.lX166U64tFeqKd6snFduL-oXWD_LXwzPMyQYVF3g8ek';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+  let datosActuales = [];
+  let tipoActual = '';
+
+    async function abrirListado(tipo) {
+      document.getElementById('inicio').style.display = 'none';
+      const listado = document.getElementById('listado');
+      listado.style.display = 'block';
+      document.getElementById('titulo-listado').textContent = `Listado de ${tipo}`;
+      tipoActual = tipo;
+
+      const tbody = document.getElementById('tabla-body');
+      tbody.innerHTML = `<tr><td colspan='11' style='text-align:center;color:#6b7280;'>Cargando datos...</td></tr>`;
+
+      const { data, error } = await supabaseClient
+        .from('establecimientos')
+        .select('*')
+        .eq('denominacion', tipo.toUpperCase());
+
+      if (error) {
+        tbody.innerHTML = `<tr><td colspan='11' style='color:red;text-align:center;'>Error al cargar los datos</td></tr>`;
+        console.error(error);
+        return;
+      }
+
+      datosActuales = data || [];
+      actualizarFiltros();
+      filtrarYMostrar();
+    }
+
+    function actualizarFiltros() {
+      // Localidad
+      const localidadSelect = document.getElementById('localidad-select');
+      const localidades = [...new Set(datosActuales.map(item => item.localidad).filter(Boolean))].sort();
+      localidadSelect.innerHTML = '<option value="">Todas</option>' + localidades.map(l => `<option value="${l}">${l}</option>`).join('');
+      // Categoría
+      const categoriaSelect = document.getElementById('categoria-select');
+      const categorias = [...new Set(datosActuales.map(item => item.categoria).filter(Boolean))].sort();
+      categoriaSelect.innerHTML = '<option value="">Todas</option>' + categorias.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function filtrarYMostrar() {
+      const tbody = document.getElementById('tabla-body');
+      const region = document.getElementById('region-select').value;
+      const localidad = document.getElementById('localidad-select').value;
+      const categoria = document.getElementById('categoria-select').value;
+      let filtrados = datosActuales;
+      if (region) {
+        filtrados = filtrados.filter(item => (item.region || '').toUpperCase() === region);
+      }
+      if (localidad) {
+        filtrados = filtrados.filter(item => (item.localidad || '') === localidad);
+      }
+      if (categoria) {
+        filtrados = filtrados.filter(item => (item.categoria || '') === categoria);
+      }
+      if (!filtrados || filtrados.length === 0) {
+        tbody.innerHTML = `<tr><td colspan='11' style='text-align:center;color:#6b7280;'>No se encontraron registros para ${tipoActual}</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = filtrados.map(item => `
+        <tr>
+          <td>${item.sector || ''}</td>
+          <td>${item.categoria || ''}</td>
+          <td>${item.region || ''}</td>
+          <td>${item.denominacion || ''}</td>
+          <td>${item.nro || ''}</td>
+          <td>${item.nombre || ''}</td>
+          <td>${item.localidad || ''}</td>
+          <td>${item.departamento || ''}</td>
+          <td>${item.niveles || ''}</td>
+          <td>${item.modalidad || ''}</td>
+          <td>${item.ambito || ''}</td>
+        </tr>`).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const regionSelect = document.getElementById('region-select');
+      const localidadSelect = document.getElementById('localidad-select');
+      const categoriaSelect = document.getElementById('categoria-select');
+      if (regionSelect) regionSelect.addEventListener('change', filtrarYMostrar);
+      if (localidadSelect) localidadSelect.addEventListener('change', filtrarYMostrar);
+      if (categoriaSelect) categoriaSelect.addEventListener('change', filtrarYMostrar);
+    });
+
+    function volverInicio() {
+      document.getElementById('listado').style.display = 'none';
+      const inicio = document.getElementById('inicio');
+      inicio.style.display = 'grid';
+      triggerGridAnimation();
+    }
+
+    function buscarElemento() {
+      const filtro = document.getElementById('buscador').value.toLowerCase();
+      const carpetas = document.querySelectorAll('.carpeta');
+      carpetas.forEach(carpeta => {
+        const texto = carpeta.textContent.toLowerCase();
+        carpeta.style.display = texto.includes(filtro) ? 'block' : 'none';
+      });
+    }
+
+    function triggerGridAnimation() {
+      const cards = document.querySelectorAll('.carpeta');
+      cards.forEach((card, i) => {
+        card.classList.remove('enter');
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        card.style.removeProperty('animation');
+        card.style.setProperty('--delay', (i * 90) + 'ms');
+        card.classList.add('enter');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', triggerGridAnimation);
+  </script>
+</body>
+</html>

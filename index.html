@@ -718,47 +718,26 @@
       // Buscar en la base de datos si hay coincidencia con un establecimiento
       const resultadosDiv = document.getElementById('buscador-resultados');
       resultadosDiv.innerHTML = '';
-      if (filtro.length > 2) {
-        // Buscar por nombre o número en la base de datos (insensible a mayúsculas/minúsculas)
+      // Buscar por nombre, número o denominación en la base de datos (insensible a mayúsculas/minúsculas, cualquier cantidad de caracteres)
+      if (filtro.length > 0) {
         const { data, error } = await supabaseClient
           .from('establecimientos')
           .select('nombre, nro, denominacion')
-          .or(`nombre.ilike.%${filtro}%,nro.ilike.%${filtro}%`);
+          .or(`nombre.ilike.%${filtro}%,nro.ilike.%${filtro}%,denominacion.ilike.%${filtro}%`);
         if (!error && data && data.length > 0) {
-          // Solo agrupar por las denominaciones permitidas
-          const denominacionesPermitidas = [
-            'CENTRO EDUCATIVO',
-            'ESCUELA',
-            'COLEGIO',
-            'ESCUELA DE NIVEL INICIAL',
-            'ESCUELA DE EDUCACIÓN ESPECIAL',
-            'CENTRO EDUCATIVO NIVEL SECUNDARIO',
-            'ESCUELA TÉCNICA',
-            'ESCUELA DE JORNADA COMPLETA',
-            'ESCUELA DE COMERCIO',
-            'COLEGIO PARA ADULTOS',
-            'ESCUELA SECUNDARIA DE ARTE',
-            'ESCUELA PARA ADULTOS'
-          ];
+          // Agrupar por denominación
           const agrupado = {};
           data.forEach(est => {
-            // Coincidencia parcial en nombre o nro y denominacion válida
-            if (
-              denominacionesPermitidas.includes(est.denominacion) &&
-              ((est.nombre && est.nombre.toLowerCase().includes(filtro)) || (est.nro && String(est.nro).toLowerCase().includes(filtro)))
-            ) {
-              if (!agrupado[est.denominacion]) agrupado[est.denominacion] = [];
-              agrupado[est.denominacion].push(est);
-            }
+            const denom = est.denominacion || 'Sin carpeta';
+            if (!agrupado[denom]) agrupado[denom] = [];
+            agrupado[denom].push(est);
           });
-          if (Object.keys(agrupado).length > 0) {
-            resultadosDiv.innerHTML = '<div style="background:#fff;border-radius:10px;box-shadow:0 2px 8px #0001;padding:1em 1.2em;margin-top:0.5em;">' +
-              '<b>Coincidencias encontradas:</b><ul style="margin:0.5em 0 0 1em;padding:0;">' +
-              Object.entries(agrupado).map(([carpeta, ests]) =>
-                `<li><b>${carpeta}</b>: ${ests.map(e => `${e.nombre} <span style='color:#888'>(N° ${e.nro})</span>`).join(', ')}</li>`
-              ).join('') +
-              '</ul></div>';
-          }
+          resultadosDiv.innerHTML = '<div style="background:#fff;border-radius:10px;box-shadow:0 2px 8px #0001;padding:1em 1.2em;margin-top:0.5em;">' +
+            '<b>Coincidencias encontradas:</b><ul style="margin:0.5em 0 0 1em;padding:0;">' +
+            Object.entries(agrupado).map(([carpeta, ests]) =>
+              `<li><b>${carpeta}</b>: ${ests.map(e => `${e.nombre} <span style='color:#888'>(N° ${e.nro})</span>`).join(', ')}</li>`
+            ).join('') +
+            '</ul></div>';
         }
       }
     }

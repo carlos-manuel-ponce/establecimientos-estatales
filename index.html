@@ -159,11 +159,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="logo-sl-transparente.png" />
   <!-- Montserrat Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dirección Gestión Educativa</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
   <style>
@@ -261,23 +261,41 @@
     }
 
     .container {
-      width: 100%;
-      max-width: 1500px;
-      margin: 0 auto;
+      width: 100vw;
+      max-width: 100vw;
+      margin: 0;
       box-sizing: border-box;
+      padding: 0;
+      overflow-x: hidden;
     }
 
     .carpetas-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      padding: 2.25rem 0 3rem 0;
-      width: 100%;
-      box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 2rem;
+  padding: 2.25rem 1rem 3rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+    }
+    @media (max-width: 1200px) {
+      .carpetas-container {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.2rem;
+        padding: 2rem 0.5rem 2.5rem 0.5rem;
+      }
     }
     @media (max-width: 900px) {
       .carpetas-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        padding: 1.5rem 0.2rem 2rem 0.2rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .carpetas-container {
         grid-template-columns: 1fr;
+        gap: 0.7rem;
+        padding: 1rem 0.1rem 1.5rem 0.1rem;
       }
     }
 
@@ -285,7 +303,7 @@
       background: var(--azul-institucional);
       color: #fff;
       border-radius: 20px;
-      padding: 2rem;
+      padding: 2rem 1.2rem;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       position: relative;
       line-height: 1.6;
@@ -293,12 +311,20 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       opacity: 0;
       transform: translateY(40px);
-      min-height: 260px;
+      min-height: 220px;
       height: 100%;
-      min-width: 260px;
+      min-width: 0;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      box-sizing: border-box;
+    }
+    @media (max-width: 600px) {
+      .carpeta {
+        padding: 1.1rem 0.7rem;
+        min-height: 160px;
+      }
     }
 
     .carpeta.enter {
@@ -349,9 +375,9 @@
 
     .listado {
       display: none;
-      width: 100%;
-      max-width: none;
-      margin: 2rem auto;
+      width: 100vw;
+      max-width: 100vw;
+      margin: 0;
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -360,11 +386,17 @@
       box-sizing: border-box;
       min-width: 0;
     }
+    @media (max-width: 600px) {
+      .listado {
+        padding: 0.7rem 0.1rem 1rem 0.1rem;
+        border-radius: 10px;
+      }
+    }
 
   .listado table {
       width: 100%;
-      min-width: unset;
-      max-width: unset;
+      min-width: 600px;
+      max-width: 1400px;
       margin: 0 auto;
       border-collapse: separate;
       border-spacing: 0;
@@ -374,6 +406,25 @@
       background: #fff;
       table-layout: auto;
       word-break: break-word;
+      font-size: 1em;
+    }
+    @media (max-width: 900px) {
+      .listado table {
+        min-width: 400px;
+        max-width: 100vw;
+      }
+    }
+    @media (max-width: 600px) {
+      .listado table {
+        min-width: 320px;
+        max-width: 100vw;
+      }
+    }
+    @media (max-width: 600px) {
+      .listado table {
+        font-size: 0.93em;
+        min-width: 220px;
+      }
     }
     .listado th, .listado td {
       font-size: 12px;
@@ -402,15 +453,21 @@
   /* Se eliminan restricciones de ancho en media queries para que la tabla nunca se achique ni recorte campos */
 
     th, td {
-      padding: 0.8rem;
+      padding: 0.7rem 0.4rem;
       border-bottom: 1px solid #e5e7eb;
       text-align: left;
+      word-break: break-word;
+    }
+    @media (max-width: 600px) {
+      th, td {
+        padding: 0.5rem 0.2rem;
+        font-size: 0.93em;
+      }
     }
 
     th { background: var(--azul-institucional); color: white; }
 
-    @media (max-width: 992px) { .carpetas-container { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); } }
-    @media (max-width: 600px) { .carpetas-container { grid-template-columns: 1fr; } }
+  /* Eliminado: ya cubierto por los nuevos media queries */
   </style>
 </head>
 <body>
@@ -436,14 +493,15 @@
   <div class="carpeta" data-denominacion="ESCUELA"><div class="etiqueta">2</div><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="COLEGIO"><div class="etiqueta">3</div><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA DE NIVEL INICIAL"><div class="etiqueta">4</div><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE EDUCACIÓN ESPECIAL"><div class="etiqueta">5</div><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO NIVEL SECUNDARIO"><div class="etiqueta">6</div><h3>Centro Educativo Nivel Secundario</h3><p>Listado de Centros Educativos Nivel Secundario.</p><button onclick="abrirListado('CENTRO EDUCATIVO NIVEL SECUNDARIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA TÉCNICA"><div class="etiqueta">7</div><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE JORNADA COMPLETA"><div class="etiqueta">8</div><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE COMERCIO"><div class="etiqueta">9</div><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="COLEGIO PARA ADULTOS"><div class="etiqueta">10</div><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA SECUNDARIA DE ARTE"><div class="etiqueta">11</div><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA PARA ADULTOS"><div class="etiqueta">12</div><h3>Escuelas para Adultos</h3><p>Listado de Escuelas para Adultos.</p><button onclick="abrirListado('ESCUELA PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA TÉCNICA"><div class="etiqueta">5</div><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA DE COMERCIO"><div class="etiqueta">6</div><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="COLEGIO PARA ADULTOS"><div class="etiqueta">7</div><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA PARA ADULTOS"><div class="etiqueta">8</div><h3>Escuelas para Adultos</h3><p>Listado de Escuelas para Adultos.</p><button onclick="abrirListado('ESCUELA PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <!-- Las siguientes categorías van al final -->
+  <div class="carpeta" data-denominacion="ESCUELA DE EDUCACIÓN ESPECIAL"><div class="etiqueta">9</div><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO NIVEL SECUNDARIO"><div class="etiqueta">10</div><h3>Centro Educativo Nivel Secundario</h3><p>Listado de Centros Educativos Nivel Secundario.</p><button onclick="abrirListado('CENTRO EDUCATIVO NIVEL SECUNDARIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA DE JORNADA COMPLETA"><div class="etiqueta">11</div><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA SECUNDARIA DE ARTE"><div class="etiqueta">12</div><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <script>
     // ...existing code...
     // Mostrar totales en cada carpeta
@@ -476,10 +534,26 @@
   </script>
     </div>
 
-    <section id="listado" class="listado" style="box-shadow:none;border-radius:0;margin-top:2.5em;padding:0 0 0 0;background:transparent;">
-  <div id="listado-titulo" style="text-align:center;font-size:1.35em;font-weight:700;color:#1B2A41;margin-bottom:0.2em;margin-top:-1.2em;"></div>
-  <div id="listado-tabla" style="padding:0;display:flex;justify-content:center;">
-        <table id="tabla-establecimientos" style="width:98%;max-width:1400px;border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(27,42,65,0.18);background:var(--azul-institucional);margin:0 auto;">
+    <section id="listado" class="listado" style="box-shadow:none;border-radius:0;margin-top:0;padding:0 0 0 0;background:transparent;">
+  <div style="width:98%;max-width:1400px;margin:1.5em auto 0 auto;padding:1.1em 1.2em 1.1em 1.2em;background:#e0f7fa;border-radius:16px;box-shadow:0 2px 10px #56B4C633;display:flex;flex-direction:column;align-items:stretch;gap:1em;margin-bottom:0.7em;border:1.5px solid #b2ebf2;">
+    <div style="display:flex;flex-direction:row;align-items:center;justify-content:space-between;width:100%;gap:1em;">
+      <div id="listado-titulo" style="font-size:1.35em;font-weight:700;color:#1B2A41;white-space:nowrap;"></div>
+      <div id="filtros-listado" style="display:flex;gap:1.5em;justify-content:center;align-items:center;">
+        <label style="font-weight:600;color:#1B2A41;">Categoría:
+          <select id="filtro-categoria-listado" style="margin-left:0.5em;padding:0.3em 0.7em;border-radius:6px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;">
+            <option value="">Todas</option>
+          </select>
+        </label>
+        <label style="font-weight:600;color:#1B2A41;">Región:
+          <select id="filtro-region-listado" style="margin-left:0.5em;padding:0.3em 0.7em;border-radius:6px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;">
+            <option value="">Todas</option>
+          </select>
+        </label>
+      </div>
+      <button id="cerrar-listado" style="background:#dc2626;color:white;border:none;padding:0.5em 1.2em;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;">Cerrar</button>
+    </div>
+  <div id="listado-tabla" style="padding:0;display:flex;justify-content:center;flex-direction:column;align-items:center;margin-top:0.2em;">
+  <table id="tabla-establecimientos" style="width:98%;max-width:1400px;border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(27,42,65,0.18);background:var(--azul-institucional);margin:0 auto;border:1.2px solid #b2ebf2;">
           <thead style="position:sticky;top:0;z-index:2;background:var(--azul-institucional);">
             <tr>
                <th style="background:var(--azul-institucional);color:#fff;font-size:1.13em;padding:1.2em 0.7em;border:none;text-align:center;">Categoría</th>
@@ -541,6 +615,21 @@
 
       datosActuales = data || [];
       filtrarYMostrar();
+      // Llenar filtros de categoría y región
+      setTimeout(()=>{
+        const selectCat = document.getElementById('filtro-categoria-listado');
+        const selectReg = document.getElementById('filtro-region-listado');
+        if (selectCat && selectReg) {
+          // Categoría
+          const categorias = [...new Set((data||[]).map(e=>e.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+          selectCat.innerHTML = '<option value="">Todas</option>' + categorias.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
+          // Región
+          const regiones = [...new Set((data||[]).map(e=>e.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+          selectReg.innerHTML = '<option value="">Todas</option>' + regiones.map(reg=>`<option value="${reg}">${reg}</option>`).join('');
+          selectCat.onchange = filtrarYMostrar;
+          selectReg.onchange = filtrarYMostrar;
+        }
+      }, 0);
     }
 
     // Filtros eliminados
@@ -548,6 +637,15 @@
     function filtrarYMostrar() {
       const tbody = document.getElementById('tabla-body');
       let filtrados = datosActuales;
+      // Filtros de categoría y región
+      const selectCat = document.getElementById('filtro-categoria-listado');
+      const selectReg = document.getElementById('filtro-region-listado');
+      if (selectCat && selectCat.value) {
+        filtrados = filtrados.filter(e => e.categoria === selectCat.value);
+      }
+      if (selectReg && selectReg.value) {
+        filtrados = filtrados.filter(e => e.region === selectReg.value);
+      }
       // Ordenar por nro de menor a mayor (numérico)
       filtrados = [...filtrados].sort((a, b) => {
         if (a.nro == null && b.nro == null) return 0;
@@ -678,6 +776,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', triggerGridAnimation);
+
+    // Botón cerrar listado
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnCerrar = document.getElementById('cerrar-listado');
+      if (btnCerrar) {
+        btnCerrar.onclick = volverInicio;
+      }
+    });
   </script>
 
   <footer style="width:100%;margin-top:2.5em;padding:1.2em 0 1.2em 0;background:var(--azul-institucional);color:#fff;text-align:center;font-size:1.08em;letter-spacing:0.5px;">

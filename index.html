@@ -1,4 +1,4 @@
-  <div id="modal-detalle" class="modal-detalle" style="display:none;">
+<div id="modal-detalle" class="modal-detalle" style="display:none;">
     <div class="modal-contenido">
       <div class="modal-header" style="flex-direction:column;align-items:center;gap:0.5em;position:relative;">
         <img src="LOGO NUEVO COLOR_122003.png" alt="Logo San Luis - Ministerio de Educación" style="height:30px;max-width:400px;width:auto;display:block;margin:0 auto;">
@@ -159,7 +159,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO NUEVO COLOR_122003.png" />
   <!-- Montserrat Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -168,9 +168,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
   <style>
     :root {
-      --azul-institucional: #1B2A41;
-      --celeste: #56B4C6;
-  --fondo-gradiente: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 60%, #80deea 100%);
+        --azul-institucional: #1B2A41;
+  --celeste: #56B4C6;
+  --fondo-gradiente: linear-gradient(135deg, #e3f0ff 0%, #b3d8f8 50%, #5fa8e6 100%);
     }
 
     * { box-sizing: border-box; }
@@ -178,7 +178,7 @@
     body {
       margin: 0;
       font-family: 'Montserrat', 'Inter', sans-serif;
-      background: var(--fondo-gradiente);
+      background: #fff !important;
       color: #111827;
       min-height: 100vh;
       display: flex;
@@ -201,12 +201,12 @@
     /* Si quieres que todo el texto sea semi-bold, descomenta la siguiente línea */
     /* body, p, td, input, button, span, label { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 600; } */
 
-    header {
-      width: 100%;
-      background: var(--azul-institucional);
-      color: #fff;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
+   header {
+  width: 100%;
+  background: #1B2A41 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px 0 rgba(27,42,65,0.10), 0 2px 8px 0 rgba(86,180,198,0.07);
+}
 
     .header-content {
       max-width: 1300px;
@@ -256,17 +256,18 @@
     }
 
     .buscador input:focus {
-      outline: 2px solid #fff;
-      box-shadow: 0 0 8px #2563eb99;
-    }
+  outline: 2px solid #56B4C6;
+  box-shadow: 0 0 10px #56B4C6cc, 0 2px 8px rgba(0,0,0,0.08);
+  border: none;
+}
 
     .container {
-      width: 100vw;
-      max-width: 100vw;
-      margin: 0;
-      box-sizing: border-box;
-      padding: 0;
-      overflow-x: hidden;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  overflow-x: hidden;
     }
 
     .carpetas-container {
@@ -300,9 +301,10 @@
     }
 
     .carpeta {
-      background: var(--azul-institucional);
-      color: #fff;
+      background: var(--azul-institucional) !important;
+      color: #fff !important;
       border-radius: 20px;
+      border: 2.5px solid #1B2A41;
       padding: 2rem 1.2rem;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       position: relative;
@@ -356,7 +358,7 @@
       font-size: 0.9rem;
     }
 
-  .carpeta h3 { color: #fff; font-weight: 700; font-size: 1.3rem; margin-top: 1rem; }
+  .carpeta h3 { color: var(--celeste); font-weight: 700; font-size: 1.3rem; margin-top: 1rem; }
   .carpeta p { color: #e5e7eb; font-size: 0.95rem; margin-top: 0.5rem; }
 
     .carpeta button {
@@ -371,14 +373,14 @@
       transition: background 0.3s ease;
     }
 
-    .carpeta button:hover { background: #3A98B2; }
+    .carpeta button:hover { background: #3a8fa1; }
 
     .listado {
       display: none;
       width: 100vw;
       max-width: 100vw;
       margin: 0;
-      background: #fff;
+      background: #fff !important;
       border-radius: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       padding: 1.5rem 0 2rem 0;
@@ -394,12 +396,13 @@
     }
 
   .listado table {
-      width: 100%;
-      min-width: 600px;
-      max-width: 1400px;
-      margin: 0 auto;
-      border-collapse: separate;
-      border-spacing: 0;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  overflow-x: hidden;
+  background: transparent !important;
       border-radius: 18px;
       overflow: visible;
       box-shadow: 0 2px 10px rgba(86,180,198,0.07);
@@ -473,37 +476,56 @@
 <body>
   <header>
     <div class="header-content">
-  <img src="LOGO - MINISTERIO_032459.png" alt="Logo San Luis - Ministerio de Educación" />
-  <h1><b>Dirección Gestión Educativa</b><br><span style="font-size:1rem; font-weight:300;">Establecimientos Estatales</span></h1>
+      <img src="LOGO - MINISTERIO_032459.png" alt="Logo San Luis - Ministerio de Educación" />
+      <h1><b>Dirección Gestión Educativa</b><br><span style="font-size:1rem; font-weight:300;"></span></h1>
     </div>
   </header>
-
-  <div id="pregunta-buscador" style="display:flex;flex-direction:column;align-items:center;width:100%;margin-top:2.2em;margin-bottom:0.2em;">
-    <div style="text-align:center;font-size:1.15em;font-weight:600;color:#1B2A41;margin-bottom:0.35em;">¿Qué establecimiento estás buscando?</div>
-    <div class="buscador" id="buscador-bar" style="margin-top:0;margin-bottom:0.1em;">
-      <input type="text" id="buscador" placeholder="Buscar carpeta, número o establecimiento..." onkeyup="buscarElemento()">
-      <div id="buscador-resultados" style="width:75%;max-width:600px;left:0;right:0;margin:0 auto;position:absolute;z-index:10;top:100%;"></div>
-    </div>
+  <div style="text-align:center;font-size:1.18em;font-weight:600;color:#1B2A41;margin-top:1.5em;margin-bottom:0.35em;max-width:900px;margin-left:auto;margin-right:auto;">
+    Consulta los Establecimientos Educativos Estatales de la Provincia de San Luis
   </div>
-  <!-- listado-bar eliminado: solo tabla en la vista de listado -->
+  <div id="contadores-buscador-panel" style="position:fixed;left:0;top:120px;z-index:100;box-shadow:0 4px 18px 0 rgba(27,42,65,0.10), 0 2px 8px 0 rgba(86,180,198,0.08);background:var(--celeste);border-radius:0 18px 18px 0;padding:1.1em 1.7em 1.1em 1.2em;display:flex;flex-direction:column;gap:0.5em;align-items:flex-start;min-width:180px;max-width:260px;transition:opacity 0.3s;">
+  <script>
+    // Ocultar el panel de contadores al hacer scroll
+    window.addEventListener('scroll', function() {
+      const panel = document.getElementById('contadores-buscador-panel');
+      if (window.scrollY > 0) {
+        panel.style.opacity = '0';
+        panel.style.pointerEvents = 'none';
+      } else {
+        panel.style.opacity = '1';
+        panel.style.pointerEvents = 'auto';
+      }
+    });
+  </script>
+    <div style="font-size:13px;color:var(--azul-institucional);font-weight:900;">Establecimientos: <span id="contador-total" style="color:#fff;font-size:13px;font-weight:900;">0</span></div>
+    <div style="font-size:12px;color:var(--azul-institucional);font-weight:700;">Carpetas: <span id="contador-carpetas" style="color:#fff;font-size:12px;font-weight:700;">0</span></div>
+  </div>
+  <div class="buscador" id="buscador-bar" style="margin-top:0;margin-bottom:0.1em;display:flex;justify-content:center;">
+    <div style="position:relative;width:75%;max-width:600px;display:flex;align-items:center;">
+      <span style="position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);width:1.25em;height:1.25em;pointer-events:none;color:#56B4C6;opacity:0.85;font-size:1.25em;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </span>
+      <input type="text" id="buscador" placeholder="Buscar carpeta, número o establecimiento..." onkeyup="buscarElemento()" style="width:100%;padding:0.8rem 1.2rem 0.8rem 2.7rem;border-radius:50px;border:none;font-size:1rem;transition:box-shadow 0.3s,outline 0.3s,border 0.3s;background:var(--azul-institucional);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    </div>
+    <div id="buscador-resultados" style="width:75%;max-width:600px;left:0;right:0;margin:0 auto;position:absolute;z-index:10;top:100%;"></div>
+  </div>
 
   <div class="container" style="margin-top:2.2em;">
   <div id="inicio" class="carpetas-container">
-  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO"><div class="etiqueta">1</div><h3>Centros Educativos</h3><p>Listado de Centros Educativos.</p><button onclick="abrirListado('CENTRO EDUCATIVO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA"><div class="etiqueta">2</div><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="COLEGIO"><div class="etiqueta">3</div><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE NIVEL INICIAL"><div class="etiqueta">4</div><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA TÉCNICA"><div class="etiqueta">5</div><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE COMERCIO"><div class="etiqueta">6</div><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="COLEGIO PARA ADULTOS"><div class="etiqueta">7</div><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA PARA ADULTOS"><div class="etiqueta">8</div><h3>Escuelas para Adultos</h3><p>Listado de Escuelas para Adultos.</p><button onclick="abrirListado('ESCUELA PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO"><h3>Centros Educativos</h3><p>Listado de Centros Educativos.</p><button onclick="abrirListado('CENTRO EDUCATIVO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA"><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="COLEGIO"><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA DE NIVEL INICIAL"><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA TÉCNICA"><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA DE COMERCIO"><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="COLEGIO PARA ADULTOS"><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA PARA ADULTOS"><h3>Escuelas para Adultos</h3><p>Listado de Escuelas para Adultos.</p><button onclick="abrirListado('ESCUELA PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <!-- Las siguientes categorías van al final -->
-  <div class="carpeta" data-denominacion="ESCUELA DE EDUCACIÓN ESPECIAL"><div class="etiqueta">9</div><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO NIVEL SECUNDARIO"><div class="etiqueta">10</div><h3>Centro Educativo Nivel Secundario</h3><p>Listado de Centros Educativos Nivel Secundario.</p><button onclick="abrirListado('CENTRO EDUCATIVO NIVEL SECUNDARIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE JORNADA COMPLETA"><div class="etiqueta">11</div><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA SECUNDARIA DE ARTE"><div class="etiqueta">12</div><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA DE EDUCACIÓN ESPECIAL"><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO NIVEL SECUNDARIO"><h3>Centro Educativo Nivel Secundario</h3><p>Listado de Centros Educativos Nivel Secundario.</p><button onclick="abrirListado('CENTRO EDUCATIVO NIVEL SECUNDARIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA DE JORNADA COMPLETA"><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ESCUELA SECUNDARIA DE ARTE"><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <script>
-    // ...existing code...
     // Mostrar totales en cada carpeta
     document.addEventListener('DOMContentLoaded', async () => {
       const denominaciones = [
@@ -517,8 +539,8 @@
         'ESCUELA DE JORNADA COMPLETA',
         'ESCUELA DE COMERCIO',
         'COLEGIO PARA ADULTOS',
-        'ESCUELA SECUNDARIA DE ARTE',
-        'ESCUELA PARA ADULTOS'
+        'ESCUELA PARA ADULTOS',
+        'ESCUELA SECUNDARIA DE ARTE'
       ];
       const { data, error } = await supabaseClient
         .from('establecimientos')
@@ -534,11 +556,12 @@
   </script>
     </div>
 
-    <section id="listado" class="listado" style="box-shadow:none;border-radius:0;margin-top:0;padding:0 0 0 0;background:transparent;">
-  <div style="width:98%;max-width:1400px;margin:1.5em auto 0 auto;padding:1.1em 1.2em 1.1em 1.2em;background:#e0f7fa;border-radius:16px;box-shadow:0 2px 10px #56B4C633;display:flex;flex-direction:column;align-items:stretch;gap:1em;margin-bottom:0.7em;border:1.5px solid #b2ebf2;">
+  <section id="listado" class="listado" style="box-shadow:none;border-radius:0;margin-top:0;padding:0 0 0 0;background:#1B2A41;">
+  <div style="width:98%;max-width:1400px;margin:1.5em auto 0 auto;padding:1.1em 1.2em 1.1em 1.2em;background:#fff;border-radius:16px;box-shadow:0 2px 10px #56B4C633;display:flex;flex-direction:column;align-items:stretch;gap:1em;margin-bottom:0.7em;border:1.5px solid #b2ebf2;">
     <div style="display:flex;flex-direction:row;align-items:center;justify-content:space-between;width:100%;gap:1em;">
-      <div id="listado-titulo" style="font-size:1.35em;font-weight:700;color:#1B2A41;white-space:nowrap;"></div>
-      <div id="filtros-listado" style="display:flex;gap:1.5em;justify-content:center;align-items:center;">
+      <div id="listado-titulo" style="font-size:1.35em;font-weight:700;color:#1B2A41;white-space:nowrap;margin-right:1.2em;"></div>
+      <input id="buscador-listado" type="text" placeholder="Buscar en el listado..." style="flex:1 1 220px;max-width:260px;padding:0.5em 1em;border-radius:8px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;margin-right:1em;" onkeyup="filtrarYMostrar()">
+      <div id="filtros-listado" style="display:flex;gap:1em;align-items:center;">
         <label style="font-weight:600;color:#1B2A41;">Categoría:
           <select id="filtro-categoria-listado" style="margin-left:0.5em;padding:0.3em 0.7em;border-radius:6px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;">
             <option value="">Todas</option>
@@ -550,7 +573,7 @@
           </select>
         </label>
       </div>
-      <button id="cerrar-listado" style="background:#dc2626;color:white;border:none;padding:0.5em 1.2em;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;">Cerrar</button>
+      <button id="cerrar-listado" style="background:#dc2626;color:white;border:none;padding:0.5em 1.2em;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;margin-left:1em;" onclick="mostrarVistaPrincipal()">Cerrar</button>
     </div>
   <div id="listado-tabla" style="padding:0;display:flex;justify-content:center;flex-direction:column;align-items:center;margin-top:0.2em;">
   <table id="tabla-establecimientos" style="width:98%;max-width:1400px;border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(27,42,65,0.18);background:var(--azul-institucional);margin:0 auto;border:1.2px solid #b2ebf2;">
@@ -579,64 +602,107 @@
   let datosActuales = [];
   let tipoActual = '';
 
-    async function abrirListado(tipo) {
-  document.getElementById('inicio').style.display = 'none';
-  document.getElementById('pregunta-buscador').style.display = 'flex';
-      const listado = document.getElementById('listado');
-      listado.style.display = 'block';
-      tipoActual = tipo;
-
-      // Mostrar el título de la carpeta
-      // Mostrar el título de la carpeta en plural
-      let titulo = tipo.trim();
-      // Si termina en vocal, agrega 's', si termina en consonante agrega 'es', si ya es plural no cambia
-      if (!/s$/i.test(titulo)) {
-        if (/[aeiouáéíóú]$/i.test(titulo)) {
-          titulo += 's';
-        } else {
-          titulo += 'es';
-        }
-      }
-      document.getElementById('listado-titulo').textContent = titulo.charAt(0).toUpperCase() + titulo.slice(1).toLowerCase();
-
-      const tbody = document.getElementById('tabla-body');
-      tbody.innerHTML = `<tr><td colspan='10' style='text-align:center;color:#6b7280;'>Cargando datos...</td></tr>`;
-
+  // Cargar y mostrar contadores al iniciar
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
       const { data, error } = await supabaseClient
         .from('establecimientos')
-        .select('*')
-        .eq('denominacion', tipo.toUpperCase());
-
-      if (error) {
-        tbody.innerHTML = `<tr><td colspan='11' style='color:red;text-align:center;'>Error al cargar los datos</td></tr>`;
-        console.error(error);
-        return;
+        .select('id, denominacion');
+      if (!error && data) {
+        // Total establecimientos
+        document.getElementById('contador-total').textContent = data.length;
+        // Total carpetas (distintas denominaciones)
+        const totalCarpetas = new Set(data.map(e => (e.denominacion||'').toUpperCase())).size;
+        document.getElementById('contador-carpetas').textContent = totalCarpetas;
       }
-
-      datosActuales = data || [];
-      filtrarYMostrar();
-      // Llenar filtros de categoría y región
-      setTimeout(()=>{
-        const selectCat = document.getElementById('filtro-categoria-listado');
-        const selectReg = document.getElementById('filtro-region-listado');
-        if (selectCat && selectReg) {
-          // Categoría
-          const categorias = [...new Set((data||[]).map(e=>e.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-          selectCat.innerHTML = '<option value="">Todas</option>' + categorias.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
-          // Región
-          const regiones = [...new Set((data||[]).map(e=>e.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-          selectReg.innerHTML = '<option value="">Todas</option>' + regiones.map(reg=>`<option value="${reg}">${reg}</option>`).join('');
-          selectCat.onchange = filtrarYMostrar;
-          selectReg.onchange = filtrarYMostrar;
-        }
-      }, 0);
+    } catch (e) {
+      // No mostrar error visual
     }
+  });
+
+  async function abrirListado(tipo) {
+  // Ocultar el inicio y elementos principales, mostrar solo el listado
+  const inicio = document.getElementById('inicio');
+  if (inicio) inicio.style.display = 'none';
+  // Ocultar subtítulo
+  const subtitulo = document.querySelector('div[style*="Consulta los Establecimientos Educativos Estatales"]');
+  if (subtitulo) subtitulo.style.display = 'none';
+  // Ocultar contadores
+  const contadores = document.getElementById('contadores-buscador-panel');
+  if (contadores) contadores.style.display = 'none';
+  // Ocultar buscador
+  const buscadorBar = document.getElementById('buscador-bar');
+  if (buscadorBar) buscadorBar.style.display = 'none';
+  // Reiniciar el buscador al abrir un listado
+  const buscador = document.getElementById('buscador');
+  if (buscador) buscador.value = '';
+  const listado = document.getElementById('listado');
+  if (listado) listado.style.display = 'block';
+  tipoActual = tipo;
+
+    // Mostrar el título de la carpeta
+    // Mostrar el título de la carpeta en plural
+    let titulo = tipo.trim();
+    // Si termina en vocal, agrega 's', si termina en consonante agrega 'es', si ya es plural no cambia
+    if (!/s$/i.test(titulo)) {
+      if (/[aeiouáéíóú]$/i.test(titulo)) {
+        titulo += 's';
+      } else {
+        titulo += 'es';
+      }
+    }
+    document.getElementById('listado-titulo').textContent = titulo.charAt(0).toUpperCase() + titulo.slice(1).toLowerCase();
+
+    const tbody = document.getElementById('tabla-body');
+    tbody.innerHTML = `<tr><td colspan='10' style='text-align:center;color:#6b7280;'>Cargando datos...</td></tr>`;
+
+    const { data, error } = await supabaseClient
+      .from('establecimientos')
+      .select('*')
+      .eq('denominacion', tipo.toUpperCase());
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan='11' style='color:red;text-align:center;'>Error al cargar los datos</td></tr>`;
+      console.error(error);
+      return;
+    }
+
+    datosActuales = data || [];
+    filtrarYMostrar();
+    // Llenar filtros de categoría y región
+    setTimeout(()=>{
+      const selectCat = document.getElementById('filtro-categoria-listado');
+      const selectReg = document.getElementById('filtro-region-listado');
+      if (selectCat && selectReg) {
+        // Categoría
+        const categorias = [...new Set((data||[]).map(e=>e.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+        selectCat.innerHTML = '<option value="">Todas</option>' + categorias.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
+        // Región
+        const regiones = [...new Set((data||[]).map(e=>e.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+        selectReg.innerHTML = '<option value="">Todas</option>' + regiones.map(reg=>`<option value="${reg}">${reg}</option>`).join('');
+        selectCat.onchange = filtrarYMostrar;
+        selectReg.onchange = filtrarYMostrar;
+      }
+    }, 0);
+  }
 
     // Filtros eliminados
 // actualizarContadores eliminado: ya no hay contador en la interfaz
     function filtrarYMostrar() {
       const tbody = document.getElementById('tabla-body');
       let filtrados = datosActuales;
+      // Filtro por texto del buscador
+      const buscadorListado = document.getElementById('buscador-listado');
+      const texto = buscadorListado ? buscadorListado.value.trim().toLowerCase() : '';
+      if (texto) {
+        filtrados = filtrados.filter(e =>
+          (e.categoria && e.categoria.toLowerCase().includes(texto)) ||
+          (e.region && e.region.toLowerCase().includes(texto)) ||
+          (e.denominacion && e.denominacion.toLowerCase().includes(texto)) ||
+          (e.nro && String(e.nro).toLowerCase().includes(texto)) ||
+          (e.nombre && e.nombre.toLowerCase().includes(texto))
+        );
+      }
       // Filtros de categoría y región
       const selectCat = document.getElementById('filtro-categoria-listado');
       const selectReg = document.getElementById('filtro-region-listado');
@@ -693,37 +759,49 @@
   // Filtros eliminados: no se agregan listeners
 
     function volverInicio() {
-      document.getElementById('listado').style.display = 'none';
-      document.getElementById('pregunta-buscador').style.display = 'flex';
+  document.getElementById('pregunta-buscador').style.display = 'flex';
+  document.getElementById('listado').style.display = 'none';
+  // Pregunta y buscador eliminados, no se muestra nada
       const inicio = document.getElementById('inicio');
       inicio.style.display = 'grid';
       triggerGridAnimation();
     }
 
     async function buscarElemento() {
+      // Si la interfaz de listado está visible, filtrar filas de la tabla
+      const listado = document.getElementById('listado');
       const filtro = document.getElementById('buscador').value.toLowerCase();
-      const carpetas = document.querySelectorAll('.carpeta');
-      let coincidencias = [];
-      // Filtrar carpetas por nombre o número
-      carpetas.forEach(carpeta => {
-        const texto = carpeta.textContent.toLowerCase();
-        const etiqueta = carpeta.querySelector('.etiqueta')?.textContent.toLowerCase() || '';
-        if (texto.includes(filtro) || etiqueta.includes(filtro)) {
-          carpeta.style.display = 'block';
-        } else {
-          carpeta.style.display = 'none';
+      if (listado && listado.style.display !== 'none') {
+        const tbody = document.getElementById('tabla-body');
+        if (tbody) {
+          const filas = tbody.querySelectorAll('tr.fila-establecimiento');
+          filas.forEach(fila => {
+            const nombre = (fila.querySelector('td:nth-child(5)')?.textContent || '').toLowerCase();
+            if (filtro.length === 0 || nombre.includes(filtro)) {
+              fila.style.display = '';
+              fila.style.outline = filtro.length > 0 ? '2px solid #56B4C6' : '';
+            } else {
+              fila.style.display = 'none';
+              fila.style.outline = '';
+            }
+          });
         }
+      }
+      const carpetas = document.querySelectorAll('.carpeta');
+      // Limpiar nombres previos
+      carpetas.forEach(carpeta => {
+        carpeta.style.display = 'none';
+        carpeta.style.outline = '';
+        // Eliminar nombres previos
+        let nombrePreview = carpeta.querySelector('.buscador-nombre-preview');
+        if (nombrePreview) nombrePreview.remove();
       });
 
-      // Buscar en la base de datos si hay coincidencia con un establecimiento
-      const resultadosDiv = document.getElementById('buscador-resultados');
-      resultadosDiv.innerHTML = '';
-      // Buscar por nombre, número o denominación en la base de datos (insensible a mayúsculas/minúsculas, cualquier cantidad de caracteres)
       if (filtro.length > 0) {
         const { data, error } = await supabaseClient
           .from('establecimientos')
-          .select('nombre, nro, denominacion')
-          .or(`nombre.ilike.%${filtro}%,nro.ilike.%${filtro}%,denominacion.ilike.%${filtro}%`);
+          .select('nombre, denominacion')
+          .ilike('nombre', `%${filtro}%`);
         if (!error && data && data.length > 0) {
           // Agrupar por denominación
           const agrupado = {};
@@ -732,12 +810,23 @@
             if (!agrupado[denom]) agrupado[denom] = [];
             agrupado[denom].push(est);
           });
-          resultadosDiv.innerHTML = '<div style="background:#fff;border-radius:10px;box-shadow:0 2px 8px #0001;padding:1em 1.2em;margin-top:0.5em;">' +
-            '<b>Coincidencias encontradas:</b><ul style="margin:0.5em 0 0 1em;padding:0;">' +
-            Object.entries(agrupado).map(([carpeta, ests]) =>
-              `<li><b>${carpeta}</b>: ${ests.map(e => `${e.nombre} <span style='color:#888'>(N° ${e.nro})</span>`).join(', ')}</li>`
-            ).join('') +
-            '</ul></div>';
+          // Mostrar carpetas solo si hay coincidencia en el nombre de la escuela (columna nombre)
+          carpetas.forEach(carpeta => {
+            const denom = carpeta.getAttribute('data-denominacion') || '';
+            if (agrupado[denom]) {
+              carpeta.style.display = 'block';
+              carpeta.style.outline = '3px solid #56B4C6';
+              // Mostrar los nombres coincidentes debajo del nombre de la carpeta
+              let h3 = carpeta.querySelector('h3');
+              if (h3) {
+                let preview = document.createElement('div');
+                preview.className = 'buscador-nombre-preview';
+                preview.style = 'margin-top:0.7em;font-size:1em;color:#fff;background:#56B4C6;border-radius:8px;padding:0.4em 0.7em;max-height:90px;overflow-y:auto;';
+                preview.innerHTML = agrupado[denom].map(e => `<div style='white-space:normal;'>${e.nombre}</div>`).join('');
+                h3.insertAdjacentElement('afterend', preview);
+              }
+            }
+          });
         }
       }
     }
@@ -765,8 +854,8 @@
     });
   </script>
 
-  <footer style="width:100%;margin-top:2.5em;padding:1.2em 0 1.2em 0;background:var(--azul-institucional);color:#fff;text-align:center;font-size:1.08em;letter-spacing:0.5px;">
-    © Ministerio de Educación. Gobierno de la Provincia de San Luis
+  <footer style="width:100%;margin-top:2.5em;padding:1.2em 0 1.2em 0;background:#fff;color:#1B2A41;text-align:center;font-size:1.08em;letter-spacing:0.5px;">
+    © 2025 Dirección Gestión Educativa. Ministerio de Educación de la Provincia de San Luis.
   </footer>
 </body>
 </html>

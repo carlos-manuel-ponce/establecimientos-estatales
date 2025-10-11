@@ -1,3 +1,90 @@
+  <style>
+    /* Responsive para listado y elementos principales */
+    @media (max-width: 900px) {
+      .listado > div {
+        padding: 0.7em 0.2em 0.7em 0.2em !important;
+        border-radius: 10px !important;
+      }
+      #listado-titulo {
+        font-size: 1.1em !important;
+      }
+      #filtros-listado label,
+      #filtros-listado select {
+        font-size: 0.98em !important;
+      }
+      #buscador-listado {
+        max-width: 100% !important;
+        min-width: 120px;
+        margin: 0.5em 0 0.5em 0 !important;
+      }
+      #cerrar-listado {
+        margin: 0.5em 0 0.5em 0 !important;
+        width: 100%;
+      }
+      .listado > div > div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.7em !important;
+      }
+      #tabla-establecimientos {
+        font-size: 0.93em !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .listado > div {
+        padding: 0.3em 0.1em 0.3em 0.1em !important;
+      }
+      #tabla-establecimientos th, #tabla-establecimientos td {
+        padding: 0.4em 0.2em !important;
+        font-size: 0.89em !important;
+      }
+      #tabla-establecimientos {
+        font-size: 0.85em !important;
+      }
+      #listado-titulo {
+        font-size: 1em !important;
+      }
+      #filtros-listado label,
+      #filtros-listado select {
+        font-size: 0.93em !important;
+      }
+      #cerrar-listado {
+        font-size: 0.98em !important;
+      }
+    }
+    @media (max-width: 480px) {
+      #tabla-establecimientos th, #tabla-establecimientos td {
+        font-size: 0.78em !important;
+        padding: 0.25em 0.1em !important;
+      }
+      #listado-titulo {
+        font-size: 0.93em !important;
+      }
+      #cerrar-listado {
+        font-size: 0.93em !important;
+      }
+    }
+    /* Ajustes para el panel de contadores en móvil */
+    @media (max-width: 600px) {
+      #contadores-buscador-panel {
+        min-width: 120px !important;
+        max-width: 180px !important;
+        padding: 0.7em 0.7em 0.7em 0.5em !important;
+        font-size: 0.93em !important;
+      }
+    }
+    /* Ajustes para el buscador principal */
+    @media (max-width: 600px) {
+      #buscador-bar {
+        width: 98vw !important;
+        max-width: 99vw !important;
+      }
+      #buscador {
+        font-size: 0.98em !important;
+        padding: 0.7em 0.7em 0.7em 2.2em !important;
+      }
+    }
+  </style>
 <div id="modal-detalle" class="modal-detalle" style="display:none;">
     <div class="modal-contenido">
       <div class="modal-header" style="flex-direction:column;align-items:center;gap:0.5em;position:relative;">

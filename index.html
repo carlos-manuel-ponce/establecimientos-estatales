@@ -845,13 +845,7 @@
 
     document.addEventListener('DOMContentLoaded', triggerGridAnimation);
 
-    // Botón cerrar listado
-    document.addEventListener('DOMContentLoaded', () => {
-      const btnCerrar = document.getElementById('cerrar-listado');
-      if (btnCerrar) {
-        btnCerrar.onclick = volverInicio;
-      }
-    });
+  // Botón cerrar listado: ya se maneja con onclick="mostrarVistaPrincipal()" en el HTML
   </script>
 
   <footer style="width:100%;margin-top:2.5em;padding:1.2em 0 1.2em 0;background:#fff;color:#1B2A41;text-align:center;font-size:1.08em;letter-spacing:0.5px;">

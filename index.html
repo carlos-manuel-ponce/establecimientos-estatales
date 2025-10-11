@@ -1,4 +1,62 @@
   <style>
+    /* Ajustes específicos para iPhone 11 y móviles pequeños (ancho 414px o menos) */
+    @media (max-width: 430px) {
+      .listado > div {
+        padding: 0.1em 0.1em 0.1em 0.1em !important;
+        border-radius: 7px !important;
+      }
+      #listado-titulo {
+        font-size: 0.98em !important;
+        margin-bottom: 0.3em;
+      }
+      #filtros-listado label,
+      #filtros-listado select {
+        font-size: 0.89em !important;
+      }
+      #buscador-listado {
+        max-width: 100% !important;
+        min-width: 80px;
+        font-size: 0.95em !important;
+        margin: 0.3em 0 0.3em 0 !important;
+      }
+      #cerrar-listado {
+        margin: 0.3em 0 0.3em 0 !important;
+        width: 100%;
+        font-size: 0.93em !important;
+      }
+      .listado > div > div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.5em !important;
+      }
+      #tabla-establecimientos {
+        font-size: 0.78em !important;
+      }
+      #tabla-establecimientos th, #tabla-establecimientos td {
+        padding: 0.18em 0.08em !important;
+        font-size: 0.78em !important;
+      }
+      #contadores-buscador-panel {
+        min-width: 90px !important;
+        max-width: 120px !important;
+        padding: 0.4em 0.4em 0.4em 0.3em !important;
+        font-size: 0.85em !important;
+      }
+      #buscador-bar {
+        width: 99vw !important;
+        max-width: 99vw !important;
+      }
+      #buscador {
+        font-size: 0.93em !important;
+        padding: 0.6em 0.6em 0.6em 2em !important;
+      }
+      footer {
+        font-size: 0.93em !important;
+        padding: 0.7em 0 !important;
+      }
+    }
+  </style>
+  <style>
     /* Responsive para listado y elementos principales */
     @media (max-width: 900px) {
       .listado > div {
@@ -935,7 +993,7 @@
   // Botón cerrar listado: ya se maneja con onclick="mostrarVistaPrincipal()" en el HTML
   </script>
 
-  <footer style="width:100%;margin-top:2.5em;padding:1.2em 0 1.2em 0;background:#fff;color:#1B2A41;text-align:center;font-size:1.08em;letter-spacing:0.5px;">
+  <footer style="width:100%;margin-top:2.5em;padding:1.2em 0 1.2em 0;background:var(--celeste,#56B4C6);color:#fff;text-align:center;font-size:1.08em;letter-spacing:0.5px;">
     © 2025 Dirección Gestión Educativa. Ministerio de Educación de la Provincia de San Luis.
   </footer>
 

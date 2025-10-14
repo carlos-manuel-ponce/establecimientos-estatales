@@ -508,8 +508,8 @@
 
     .carpeta button {
       margin-top: 1rem;
-      background: var(--celeste);
-      color: #fff;
+      background: #fff;
+      color: #3B65A3;
       border: none;
       border-radius: 8px;
       padding: 0.6rem 1.4rem;
@@ -650,7 +650,7 @@
       <span style="position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);width:1.25em;height:1.25em;pointer-events:none;color:#56B4C6;opacity:0.85;font-size:1.25em;display:flex;align-items:center;justify-content:center;">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       </span>
-      <input type="text" id="buscador" placeholder="Buscar carpeta, número o establecimiento..." onkeyup="buscarElemento()" style="width:100%;padding:0.8rem 1.2rem 0.8rem 2.7rem;border-radius:50px;border:none;font-size:1rem;transition:box-shadow 0.3s,outline 0.3s,border 0.3s;background:var(--azul-institucional);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <input type="text" id="buscador" placeholder="Busqueda por palabra clave..." onkeyup="buscarElemento()" style="width:100%;padding:0.8rem 1.2rem 0.8rem 2.7rem;border-radius:50px;border:none;font-size:1rem;transition:box-shadow 0.3s,outline 0.3s,border 0.3s;background:var(--azul-institucional);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
     </div>
     <div id="buscador-resultados" style="width:75%;max-width:600px;left:0;right:0;margin:0 auto;position:absolute;z-index:10;top:100%;"></div>
   </div>
@@ -663,8 +663,7 @@
   <div class="carpeta" data-denominacion="ESCUELA DE NIVEL INICIAL"><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA TÉCNICA"><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA DE COMERCIO"><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="COLEGIO PARA ADULTOS"><h3>Colegios para Adultos</h3><p>Listado de Colegios para Adultos.</p><button onclick="abrirListado('COLEGIO PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA PARA ADULTOS"><h3>Escuelas para Adultos</h3><p>Listado de Escuelas para Adultos.</p><button onclick="abrirListado('ESCUELA PARA ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ADULTOS"><h3>Adultos</h3><p>Listado de Colegios y Escuelas para Adultos.</p><button onclick="abrirListado('ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <!-- Las siguientes categorías van al final -->
   <div class="carpeta" data-denominacion="ESCUELA DE EDUCACIÓN ESPECIAL"><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="CENTRO EDUCATIVO NIVEL SECUNDARIO"><h3>Centro Educativo Nivel Secundario</h3><p>Listado de Centros Educativos Nivel Secundario.</p><button onclick="abrirListado('CENTRO EDUCATIVO NIVEL SECUNDARIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
@@ -683,8 +682,7 @@
         'ESCUELA TÉCNICA',
         'ESCUELA DE JORNADA COMPLETA',
         'ESCUELA DE COMERCIO',
-        'COLEGIO PARA ADULTOS',
-        'ESCUELA PARA ADULTOS',
+        'ADULTOS',
         'ESCUELA SECUNDARIA DE ARTE'
       ];
       const { data, error } = await supabaseClient
@@ -692,7 +690,12 @@
         .select('denominacion');
       if (!error && data) {
         denominaciones.forEach(denom => {
-          const total = data.filter(e => e.denominacion === denom).length;
+          let total = 0;
+          if (denom === 'ADULTOS') {
+            total = data.filter(e => e.denominacion === 'COLEGIO PARA ADULTOS' || e.denominacion === 'ESCUELA PARA ADULTOS').length;
+          } else {
+            total = data.filter(e => e.denominacion === denom).length;
+          }
           const card = document.querySelector(`.carpeta[data-denominacion="${denom}"] .total-carpeta`);
           if (card) card.textContent = `Total: ${total}`;
         });
@@ -704,8 +707,11 @@
   <section id="listado" class="listado" style="box-shadow:none;border-radius:0;margin-top:0;padding:0 0 0 0;background:#1B2A41;">
   <div style="width:98%;max-width:1400px;margin:1.5em auto 0 auto;padding:1.1em 1.2em 1.1em 1.2em;background:#fff;border-radius:16px;box-shadow:0 2px 10px #56B4C633;display:flex;flex-direction:column;align-items:stretch;gap:1em;margin-bottom:0.7em;border:1.5px solid #b2ebf2;">
     <div style="display:flex;flex-direction:row;align-items:center;justify-content:space-between;width:100%;gap:1em;">
-      <div id="listado-titulo" style="font-size:1.35em;font-weight:700;color:#1B2A41;white-space:nowrap;margin-right:1.2em;"></div>
-      <input id="buscador-listado" type="text" placeholder="Buscar en el listado..." style="flex:1 1 220px;max-width:260px;padding:0.5em 1em;border-radius:8px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;margin-right:1em;" onkeyup="filtrarYMostrar()">
+    <div id="listado-titulo" style="font-size:1.35em;font-weight:700;color:#1B2A41;white-space:nowrap;margin-right:1.2em;"></div>
+  <span style="font-weight:600;color:#1B2A41;margin-right:0.08em;">Buscador:</span>
+  <input id="buscador-listado" type="text" placeholder="Buscar en el listado..." style="flex:1 1 220px;max-width:260px;padding:0.3em 0.7em;border-radius:6px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;margin-right:0.18em;margin-left:0.01em;" onkeyup="filtrarYMostrar()">
+  <span style="font-weight:600;color:#1B2A41;margin-right:0.08em;margin-left:0.01em;">Total:</span>
+  <span id="total-listado-label" style="background:#e0f7fa;border-radius:6px;padding:0.3em 0.7em;border:1px solid #b2ebf2;font-size:1em;font-weight:600;color:#1B2A41;min-width:38px;display:inline-block;text-align:center;margin-left:0.01em;"> <span id="total-listado">0</span></span>
       <div id="filtros-listado" style="display:flex;gap:1em;align-items:center;">
         <label style="font-weight:600;color:#1B2A41;">Categoría:
           <select id="filtro-categoria-listado" style="margin-left:0.5em;padding:0.3em 0.7em;border-radius:6px;border:1px solid #b2ebf2;font-size:1em;background:#e0f7fa;color:#1B2A41;">
@@ -721,6 +727,7 @@
       <button id="cerrar-listado" style="background:#dc2626;color:white;border:none;padding:0.5em 1.2em;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;margin-left:1em;" onclick="mostrarVistaPrincipal()">Cerrar</button>
     </div>
   <div id="listado-tabla" style="padding:0;display:flex;justify-content:center;flex-direction:column;align-items:center;margin-top:0.2em;">
+  <!-- <div id="resumen-listado"></div> -->
   <table id="tabla-establecimientos" style="width:98%;max-width:1400px;border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(27,42,65,0.18);background:var(--azul-institucional);margin:0 auto;border:1.2px solid #b2ebf2;">
           <thead style="position:sticky;top:0;z-index:2;background:var(--azul-institucional);">
             <tr>
@@ -801,20 +808,31 @@
     const tbody = document.getElementById('tabla-body');
     tbody.innerHTML = `<tr><td colspan='10' style='text-align:center;color:#6b7280;'>Cargando datos...</td></tr>`;
 
-    const { data, error } = await supabaseClient
-      .from('establecimientos')
-      .select('*')
-      .eq('denominacion', tipo.toUpperCase());
-
+    let data = [], error = null;
+    if (tipo.toUpperCase() === 'ADULTOS') {
+      // Buscar ambos tipos y unir resultados
+      const res = await supabaseClient
+        .from('establecimientos')
+        .select('*')
+        .in('denominacion', ['COLEGIO PARA ADULTOS', 'ESCUELA PARA ADULTOS']);
+      data = res.data || [];
+      error = res.error;
+    } else {
+      const res = await supabaseClient
+        .from('establecimientos')
+        .select('*')
+        .eq('denominacion', tipo.toUpperCase());
+      data = res.data || [];
+      error = res.error;
+    }
     if (error) {
       tbody.innerHTML = `<tr><td colspan='11' style='color:red;text-align:center;'>Error al cargar los datos</td></tr>`;
       console.error(error);
       return;
     }
-
-    datosActuales = data || [];
+    datosActuales = data;
     filtrarYMostrar();
-    // Llenar filtros de categoría y región
+    // Llenar filtros de categoría y región y limpiar selección
     setTimeout(()=>{
       const selectCat = document.getElementById('filtro-categoria-listado');
       const selectReg = document.getElementById('filtro-region-listado');
@@ -822,9 +840,11 @@
         // Categoría
         const categorias = [...new Set((data||[]).map(e=>e.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
         selectCat.innerHTML = '<option value="">Todas</option>' + categorias.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
+        selectCat.value = '';
         // Región
         const regiones = [...new Set((data||[]).map(e=>e.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
         selectReg.innerHTML = '<option value="">Todas</option>' + regiones.map(reg=>`<option value="${reg}">${reg}</option>`).join('');
+        selectReg.value = '';
         selectCat.onchange = filtrarYMostrar;
         selectReg.onchange = filtrarYMostrar;
       }
@@ -871,7 +891,12 @@
         tbody.innerHTML = `<tr><td colspan='5' style='text-align:center;color:#6b7280;'>No se encontraron registros para ${tipoActual}</td></tr>`;
         return;
       }
-      tbody.innerHTML = filtrados.map((item, idx) => `
+      // Resumen arriba de la tabla (solo en el div externo)
+  // Resumen visual eliminado (deshacer cambio)
+  // Actualizar el total en el label
+  const totalLabel = document.getElementById('total-listado');
+  if (totalLabel) totalLabel.textContent = filtrados.length;
+  tbody.innerHTML = filtrados.map((item, idx) => `
         <tr class="fila-establecimiento" data-idx="${idx}" style="cursor:pointer;transition:background 0.18s;">
           <td style="color:#1B2A41;font-size:1.04em;border:none;text-align:center;">${item.categoria || ''}</td>
           <td style="color:#1B2A41;font-size:1.04em;border:none;text-align:center;">${item.region || ''}</td>

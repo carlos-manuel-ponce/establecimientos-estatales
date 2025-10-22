@@ -1,3 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO NUEVO COLOR_122003.png" />
+  <!-- Montserrat Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DGE - Establecimientos Estatales</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <style>
+    :root {
+        --azul-institucional: #1B2A41;
+  --celeste: #56B4C6;
+  --fondo-gradiente: linear-gradient(135deg, #e3f0ff 0%, #b3d8f8 50%, #5fa8e6 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      background: #fff !important;
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    th, .etiqueta, .carpeta button, .carpeta h3 {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-weight: 600;
+    }
+
+    /* Si quieres que todo el texto sea semi-bold, descomenta la siguiente línea */
+    /* body, p, td, input, button, span, label { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 600; } */
+
+   header {
+  width: 100%;
+  background: #1B2A41 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px 0 rgba(27,42,65,0.10), 0 2px 8px 0 rgba(86,180,198,0.07);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1500;
+  backdrop-filter: blur(4px);
+}
+
+    .header-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img { height: 40px; }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .buscador {
+      background: transparent;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: none;
+      z-index: 1;
+      color: #fff;
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
+      padding: 1.5rem 0 1.2rem 0;
+      border-radius: 0;
+      position: relative;
+    }
+
+    .buscador input {
+      width: 75%;
+      max-width: 600px;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 1rem;
+      transition: 0.3s ease;
+      background: var(--azul-institucional);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .buscador input:focus {
+  outline: 2px solid #56B4C6;
+  box-shadow: 0 0 10px #56B4C6cc, 0 2px 8px rgba(0,0,0,0.08);
+  border: none;
+}
+
+    .container {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  overflow-x: hidden;
+    }
+
+    .carpetas-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 2rem;
+  padding: 2.25rem 1rem 3rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+    }
+    /* Forzar 3x3 en pantallas grandes */
+    @media (min-width: 901px) {
+      .carpetas-container {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 1fr;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      /* Mostrar sólo las primeras 9 tarjetas para un 3x3 fijo */
+      .carpetas-container .carpeta:nth-child(n+10) { display: none; }
+      .carpeta { min-height: 200px; }
+    }
+    @media (max-width: 1200px) {
+      .carpetas-container {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.2rem;
+        padding: 2rem 0.5rem 2.5rem 0.5rem;
+      }
+    }
+    @media (max-width: 900px) {
+      .carpetas-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        padding: 1.5rem 0.2rem 2rem 0.2rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .carpetas-container {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        padding: 1rem 0.1rem 1.5rem 0.1rem;
+      }
+    }
+
+    .carpeta {
+      background: var(--azul-institucional) !important;
+      color: #fff !important;
+      border-radius: 20px;
+      border: 2.5px solid #1B2A41;
+      padding: 2rem 1.2rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      position: relative;
+      line-height: 1.6;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(40px);
+      min-height: 220px;
+      height: 100%;
+      min-width: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    @media (max-width: 600px) {
+      .carpeta {
+        padding: 1.1rem 0.7rem;
+        min-height: 160px;
+      }
+    }
+
+    .carpeta.enter {
+      animation: slideUp 0.7s ease forwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .carpeta:hover {
+      transform: translate(16px, -6px) scale(1.03);
+      box-shadow: 0 16px 32px 0 rgba(27,42,65,0.25), 0 0 0 4px #56B4C6aa;
+      filter: brightness(1.08) saturate(1.2);
+      transition: box-shadow 0.25s, filter 0.25s, transform 0.25s;
+    }
+
+    .etiqueta {
+      position: absolute;
+      top: -16px;
+      left: 24px;
+      background: #5EC5D1;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+  .carpeta h3 { color: var(--celeste); font-weight: 700; font-size: 1.3rem; margin-top: 1rem; }
+  .carpeta p { color: #e5e7eb; font-size: 0.95rem; margin-top: 0.5rem; }
+
+    .carpeta button {
+      margin-top: 1rem;
+      background: #fff;
+      color: #3B65A3;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.4rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .carpeta button:hover { background: #3a8fa1; }
+
+    .listado {
+      display: none;
+      width: 100vw;
+      max-width: 100vw;
+      margin: 0;
+      background: #fff !important;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 1.5rem 0 2rem 0;
+      overflow-x: auto;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+    @media (max-width: 600px) {
+      .listado {
+        padding: 0.7rem 0.1rem 1rem 0.1rem;
+        border-radius: 10px;
+      }
+    }
+
+  .listado table {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  overflow-x: hidden;
+  background: transparent !important;
+      border-radius: 18px;
+      overflow: visible;
+      box-shadow: 0 2px 10px rgba(86,180,198,0.07);
+      background: #fff;
+      table-layout: auto;
+      word-break: break-word;
+      font-size: 1em;
+    }
+    @media (max-width: 900px) {
+      .listado table {
+        min-width: 400px;
+        max-width: 100vw;
+      }
+    }
+    @media (max-width: 600px) {
+      .listado table {
+        min-width: 320px;
+        max-width: 100vw;
+      }
+    }
+    @media (max-width: 600px) {
+      .listado table {
+        font-size: 0.93em;
+        min-width: 220px;
+      }
+    }
+    .listado th, .listado td {
+      font-size: 12px;
+      white-space: normal;
+      text-overflow: initial;
+      overflow: visible;
+      max-width: none;
+      vertical-align: middle;
+      border: 1px solid #e5e7eb;
+      word-break: break-word;
+    }
+    .listado tbody tr:nth-child(even) {
+      background: #f3f4f6;
+    }
+    .listado tbody tr:nth-child(odd) {
+      background: #e5e7eb;
+    }
+    .listado thead tr {
+      background: var(--azul-institucional);
+    }
+    .listado td {
+      font-size: 0.98em;
+      padding-top: 0.7em;
+      padding-bottom: 0.7em;
+    }
+  /* Se eliminan restricciones de ancho en media queries para que la tabla nunca se achique ni recorte campos */
+
+    th, td {
+      padding: 0.7rem 0.4rem;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      word-break: break-word;
+    }
+    @media (max-width: 600px) {
+      th, td {
+        padding: 0.5rem 0.2rem;
+        font-size: 0.93em;
+      }
+    }
+
+    th { background: var(--azul-institucional); color: white; }
+
+  /* Eliminado: ya cubierto por los nuevos media queries */
+  </style>
+</head>
+<body>
+  <!-- Modal Login -->
+<div id="modal-login" class="modal-login" style="display:flex;">
+  <div class="modal-login-content">
+    <img src="LOGO NUEVO COLOR_122003.png" alt="Logo San Luis - Ministerio de Educación" style="height:38px;max-width:400px;width:auto;display:block;margin:0 auto 1.2em auto;">
+    <h2 style="color:#1B2A41;font-weight:700;margin-bottom:0.7em;">Acceso al sistema</h2>
+    <label for="pin-login" style="font-weight:600;color:#1B2A41;margin-bottom:0.5em;">Ingrese su PIN:</label>
+    <input type="password" id="pin-login" placeholder="PIN" style="width:100%;padding:0.7em 1.2em;border-radius:10px;border:1.5px solid #b2ebf2;font-size:1.1em;background:#e0f7fa;color:#1B2A41;margin-bottom:1em;">
+  <button id="btn-login" style="background:#56B4C6;color:white;border:none;padding:0.7em 2.2em;border-radius:10px;font-size:1.08em;font-weight:600;cursor:pointer;">Ingresar</button>
+  <div id="login-error" style="color:#dc2626;font-weight:600;margin-top:1em;display:none;"></div>
+  </div>
+</div>
+
+<style>
+.modal-login {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #1B2A41; /* Azul institucional */
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+.modal-login-content {
+  background: rgba(255,255,255,0.92);
+  border-radius: 18px;
+  padding: 2.2rem 2.2rem 2rem 2.2rem;
+  min-width: 320px;
+  max-width: 370px;
+  width: 96vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  font-size: 1.08em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  animation: modalIn 0.25s cubic-bezier(.4,2,.6,1) forwards;
+}
+@media (max-width: 600px) {
+  .modal-login-content {
+    min-width: 90vw;
+    max-width: 99vw;
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+  }
+}
+</style>
+
+<script>
+// Login y roles por PIN
+let rolUsuario = null;
+document.addEventListener('DOMContentLoaded', () => {
+  const modalLogin = document.getElementById('modal-login');
+  const btnLogin = document.getElementById('btn-login');
+  const pinInput = document.getElementById('pin-login');
+  const errorDiv = document.getElementById('login-error');
+  function mostrarLogin() {
+    document.getElementById('modal-login').style.display = 'flex';
+    document.getElementById('contenido-app').style.display = 'none';
+    pinInput.value = '';
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    document.body.style.overflow = 'hidden';
+  }
+  function ocultarLogin() {
+    document.getElementById('modal-login').style.display = 'none';
+    document.getElementById('contenido-app').style.display = '';
+    document.body.style.overflow = '';
+  }
+  btnLogin.onclick = function() {
+    const pin = pinInput.value.trim();
+    if (pin === '1232') {
+      rolUsuario = 'admin';
+      ocultarLogin();
+      mostrarElementosPorRol();
+    } else if (pin === '3519') {
+      rolUsuario = 'lectura';
+      ocultarLogin();
+      mostrarElementosPorRol();
+    } else {
+      errorDiv.textContent = 'PIN incorrecto.';
+      errorDiv.style.display = 'block';
+    }
+  };
+  pinInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') btnLogin.click();
+  });
+  mostrarLogin();
+});
+// Ocultar botones de edición si rol es solo lectura
+function mostrarElementosPorRol() {
+  setTimeout(() => {
+    if (rolUsuario === 'lectura') {
+  // Ocultar si existen en DOM (por si el modal fue creado dinámicamente después del login)
+  const editar = document.getElementById('editar-modal');
+  const guardar = document.getElementById('guardar-modal');
+  if (editar) editar.style.display = 'none';
+  if (guardar) guardar.style.display = 'none';
+    }
+  }, 300);
+}
+</script>
   <style>
     /* Ajustes específicos para iPhone 11 y móviles pequeños (ancho 414px o menos) */
     @media (max-width: 430px) {
@@ -233,17 +672,11 @@
       const body = document.getElementById('modal-body');
       // Orden y columna personalizada
       const camposOrdenados = [
-        {nombre:'categoria',col:'izq'},
-        {nombre:'sector',col:'der'},
-        {nombre:'denominacion',col:'izq'},
-        {nombre:'region',col:'der'},
-        {nombre:'nro',col:'izq'},
-        {nombre:'nombre',col:'der'},
-        {nombre:'localidad',col:'izq'},
-        {nombre:'departamento',col:'der'},
-        {nombre:'niveles',col:'izq'},
-        {nombre:'modalidad',col:'der'},
-        {nombre:'ambito',col:'izq'}
+        {nombre:'categoria',col:'izq'}, {nombre:'region',col:'der'},
+        {nombre:'denominacion',col:'izq'}, {nombre:'localidad',col:'der'},
+        {nombre:'nro',col:'izq'}, {nombre:'departamento',col:'der'},
+        {nombre:'nombre',col:'izq'}, {nombre:'ambito',col:'der'},
+        {nombre:'modalidad',col:'izq'}, {nombre:'niveles',col:'der'}
       ];
       let htmlIzq = '', htmlDer = '';
       camposOrdenados.forEach(obj => {
@@ -257,13 +690,21 @@
         <div>${htmlIzq}</div>
         <div>${htmlDer}</div>
       </div>
-      <div style='display:flex;justify-content:center;margin-top:1.2em;'>
-        <button id='editar-modal' style='background:#1B2A41;color:white;border:none;padding:0.7rem 2.2rem;border-radius:8px;cursor:pointer;font-weight:600;'>Editar</button>
+      <div style='display:flex;justify-content:center;gap:0.6rem;margin-top:1.2em;'>
+        <button id='ver-matricula' style='background:var(--celeste);color:#fff;border:none;padding:0.6rem 1.6rem;border-radius:8px;cursor:pointer;font-weight:600;'>Ver Matricula</button>
+        <button id='ver-pof' style='background:var(--celeste);color:#fff;border:none;padding:0.6rem 1.6rem;border-radius:8px;cursor:pointer;font-weight:600;'>Ver POF</button>
+        <button id='editar-modal' style='background:#1B2A41;color:white;border:none;padding:0.7rem 2.2rem;border-radius:8px;cursor:pointer;font-weight:600;margin-left:0.4rem;'>Editar</button>
         <button id='guardar-modal' style='background:#56B4C6;color:white;border:none;padding:0.7rem 2.2rem;border-radius:8px;cursor:pointer;font-weight:600;display:none;margin-left:0.7em;'>Guardar</button>
       </div>`;
       modal.style.display = 'flex';
-      document.getElementById('editar-modal').style.display = '';
-      document.getElementById('guardar-modal').style.display = 'none';
+      // Ocultar botón editar si el rol es lectura
+      if (typeof rolUsuario !== 'undefined' && rolUsuario === 'lectura') {
+        document.getElementById('editar-modal').style.display = 'none';
+        document.getElementById('guardar-modal').style.display = 'none';
+      } else {
+        document.getElementById('editar-modal').style.display = '';
+        document.getElementById('guardar-modal').style.display = 'none';
+      }
     }
     document.addEventListener('DOMContentLoaded',()=>{
       document.getElementById('cerrar-modal').onclick = ()=>{
@@ -276,6 +717,18 @@
           document.getElementById('editar-modal').style.display = 'none';
           document.getElementById('guardar-modal').style.display = '';
         }
+          // Ver Matricula
+          if (e.target && e.target.id === 'ver-matricula') {
+            const url = modalEstablecimiento?.url_matricula || modalEstablecimiento?.matricula_url || '';
+            if (url) window.open(url, '_blank');
+            else alert('No hay URL de matrícula disponible para este establecimiento.');
+          }
+          // Ver POF
+          if (e.target && e.target.id === 'ver-pof') {
+            const url = modalEstablecimiento?.url_pof || modalEstablecimiento?.pof_url || '';
+            if (url) window.open(url, '_blank');
+            else alert('No hay URL de POF disponible para este establecimiento.');
+          }
         if (e.target && e.target.id === 'guardar-modal') {
           (async ()=>{
             const modal = document.getElementById('modal-detalle');
@@ -301,331 +754,14 @@
       });
     });
   </script>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO NUEVO COLOR_122003.png" />
-  <!-- Montserrat Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DGE - Establecimientos Estatales</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
-  <style>
-    :root {
-        --azul-institucional: #1B2A41;
-  --celeste: #56B4C6;
-  --fondo-gradiente: linear-gradient(135deg, #e3f0ff 0%, #b3d8f8 50%, #5fa8e6 100%);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: 'Montserrat', 'Inter', sans-serif;
-      background: #fff !important;
-      color: #111827;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Montserrat', 'Inter', sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-    }
-
-    th, .etiqueta, .carpeta button, .carpeta h3 {
-      font-family: 'Montserrat', 'Inter', sans-serif;
-      font-weight: 600;
-    }
-
-    /* Si quieres que todo el texto sea semi-bold, descomenta la siguiente línea */
-    /* body, p, td, input, button, span, label { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 600; } */
-
-   header {
-  width: 100%;
-  background: #1B2A41 !important;
-  color: #fff !important;
-  box-shadow: 0 8px 24px 0 rgba(27,42,65,0.10), 0 2px 8px 0 rgba(86,180,198,0.07);
-}
-
-    .header-content {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    header img { height: 40px; }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.4rem;
-      font-weight: 500;
-      text-align: right;
-    }
-
-    .buscador {
-      background: transparent;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: none;
-      z-index: 1;
-      color: #fff;
-      margin-top: 1.25rem;
-      margin-bottom: 1.25rem;
-      padding: 1.5rem 0 1.2rem 0;
-      border-radius: 0;
-      position: relative;
-    }
-
-    .buscador input {
-      width: 75%;
-      max-width: 600px;
-      padding: 0.8rem 1.2rem;
-      border-radius: 50px;
-      border: none;
-      font-size: 1rem;
-      transition: 0.3s ease;
-      background: var(--azul-institucional);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .buscador input:focus {
-  outline: 2px solid #56B4C6;
-  box-shadow: 0 0 10px #56B4C6cc, 0 2px 8px rgba(0,0,0,0.08);
-  border: none;
-}
-
-    .container {
-  width: 100vw;
-  max-width: 100vw;
-  margin: 0;
-  box-sizing: border-box;
-  padding: 0;
-  overflow-x: hidden;
-    }
-
-    .carpetas-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: 2rem;
-  padding: 2.25rem 1rem 3rem 1rem;
-  width: 100%;
-  box-sizing: border-box;
-    }
-    @media (max-width: 1200px) {
-      .carpetas-container {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.2rem;
-        padding: 2rem 0.5rem 2.5rem 0.5rem;
-      }
-    }
-    @media (max-width: 900px) {
-      .carpetas-container {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        padding: 1.5rem 0.2rem 2rem 0.2rem;
-      }
-    }
-    @media (max-width: 600px) {
-      .carpetas-container {
-        grid-template-columns: 1fr;
-        gap: 0.7rem;
-        padding: 1rem 0.1rem 1.5rem 0.1rem;
-      }
-    }
-
-    .carpeta {
-      background: var(--azul-institucional) !important;
-      color: #fff !important;
-      border-radius: 20px;
-      border: 2.5px solid #1B2A41;
-      padding: 2rem 1.2rem;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-      position: relative;
-      line-height: 1.6;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      opacity: 0;
-      transform: translateY(40px);
-      min-height: 220px;
-      height: 100%;
-      min-width: 0;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-    @media (max-width: 600px) {
-      .carpeta {
-        padding: 1.1rem 0.7rem;
-        min-height: 160px;
-      }
-    }
-
-    .carpeta.enter {
-      animation: slideUp 0.7s ease forwards;
-      animation-delay: var(--delay, 0ms);
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .carpeta:hover {
-      transform: translate(16px, -6px) scale(1.03);
-      box-shadow: 0 16px 32px 0 rgba(27,42,65,0.25), 0 0 0 4px #56B4C6aa;
-      filter: brightness(1.08) saturate(1.2);
-      transition: box-shadow 0.25s, filter 0.25s, transform 0.25s;
-    }
-
-    .etiqueta {
-      position: absolute;
-      top: -16px;
-      left: 24px;
-      background: #5EC5D1;
-      color: #fff;
-      font-weight: 600;
-      padding: 0.4rem 1rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-    }
-
-  .carpeta h3 { color: var(--celeste); font-weight: 700; font-size: 1.3rem; margin-top: 1rem; }
-  .carpeta p { color: #e5e7eb; font-size: 0.95rem; margin-top: 0.5rem; }
-
-    .carpeta button {
-      margin-top: 1rem;
-      background: #fff;
-      color: #3B65A3;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem 1.4rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .carpeta button:hover { background: #3a8fa1; }
-
-    .listado {
-      display: none;
-      width: 100vw;
-      max-width: 100vw;
-      margin: 0;
-      background: #fff !important;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      padding: 1.5rem 0 2rem 0;
-      overflow-x: auto;
-      box-sizing: border-box;
-      min-width: 0;
-    }
-    @media (max-width: 600px) {
-      .listado {
-        padding: 0.7rem 0.1rem 1rem 0.1rem;
-        border-radius: 10px;
-      }
-    }
-
-  .listado table {
-  width: 100vw;
-  max-width: 100vw;
-  margin: 0;
-  box-sizing: border-box;
-  padding: 0;
-  overflow-x: hidden;
-  background: transparent !important;
-      border-radius: 18px;
-      overflow: visible;
-      box-shadow: 0 2px 10px rgba(86,180,198,0.07);
-      background: #fff;
-      table-layout: auto;
-      word-break: break-word;
-      font-size: 1em;
-    }
-    @media (max-width: 900px) {
-      .listado table {
-        min-width: 400px;
-        max-width: 100vw;
-      }
-    }
-    @media (max-width: 600px) {
-      .listado table {
-        min-width: 320px;
-        max-width: 100vw;
-      }
-    }
-    @media (max-width: 600px) {
-      .listado table {
-        font-size: 0.93em;
-        min-width: 220px;
-      }
-    }
-    .listado th, .listado td {
-      font-size: 12px;
-      white-space: normal;
-      text-overflow: initial;
-      overflow: visible;
-      max-width: none;
-      vertical-align: middle;
-      border: 1px solid #e5e7eb;
-      word-break: break-word;
-    }
-    .listado tbody tr:nth-child(even) {
-      background: #f3f4f6;
-    }
-    .listado tbody tr:nth-child(odd) {
-      background: #e5e7eb;
-    }
-    .listado thead tr {
-      background: var(--azul-institucional);
-    }
-    .listado td {
-      font-size: 0.98em;
-      padding-top: 0.7em;
-      padding-bottom: 0.7em;
-    }
-  /* Se eliminan restricciones de ancho en media queries para que la tabla nunca se achique ni recorte campos */
-
-    th, td {
-      padding: 0.7rem 0.4rem;
-      border-bottom: 1px solid #e5e7eb;
-      text-align: left;
-      word-break: break-word;
-    }
-    @media (max-width: 600px) {
-      th, td {
-        padding: 0.5rem 0.2rem;
-        font-size: 0.93em;
-      }
-    }
-
-    th { background: var(--azul-institucional); color: white; }
-
-  /* Eliminado: ya cubierto por los nuevos media queries */
-  </style>
-</head>
-<body>
+  <div id="contenido-app" class="content-padding-fix">
   <header>
     <div class="header-content">
       <img src="LOGO - MINISTERIO_032459.png" alt="Logo San Luis - Ministerio de Educación" />
       <h1><b>Dirección Gestión Educativa</b><br><span style="font-size:1rem; font-weight:300;"></span></h1>
     </div>
   </header>
-  <div style="text-align:center;font-size:1.18em;font-weight:600;color:#1B2A41;margin-top:1.5em;margin-bottom:0.35em;max-width:900px;margin-left:auto;margin-right:auto;">
+  <div id="subtitulo" style="text-align:center;font-size:1.18em;font-weight:600;color:#1B2A41;margin-top:1.5em;margin-bottom:0.35em;max-width:900px;margin-left:auto;margin-right:auto;">
     Consulta los Establecimientos Educativos Estatales de la Provincia de San Luis
   </div>
   <div id="contadores-buscador-panel" style="position:fixed;left:0;top:120px;z-index:100;box-shadow:0 4px 18px 0 rgba(27,42,65,0.10), 0 2px 8px 0 rgba(86,180,198,0.08);background:var(--celeste);border-radius:0 18px 18px 0;padding:1.1em 1.7em 1.1em 1.2em;display:flex;flex-direction:column;gap:0.5em;align-items:flex-start;min-width:180px;max-width:260px;transition:opacity 0.3s;">
@@ -656,17 +792,18 @@
   </div>
 
   <div class="container" style="margin-top:2.2em;">
+  <!-- Añadir padding-top equivalente a la altura del header para evitar solapamiento -->
+  <style> .content-padding-fix { padding-top: 78px; } @media (max-width:600px){ .content-padding-fix{ padding-top: 92px; } } </style>
   <div id="inicio" class="carpetas-container">
   <div class="carpeta" data-denominacion="CENTRO EDUCATIVO"><h3>Centros Educativos</h3><p>Listado de Centros Educativos.</p><button onclick="abrirListado('CENTRO EDUCATIVO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA"><h3>Escuelas</h3><p>Listado de Escuelas Provinciales.</p><button onclick="abrirListado('ESCUELA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="COLEGIO"><h3>Colegios</h3><p>Listado de Colegios Provinciales.</p><button onclick="abrirListado('COLEGIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA DE NIVEL INICIAL"><h3>Escuelas de Nivel Inicial</h3><p>Listado de Escuelas de Nivel Inicial.</p><button onclick="abrirListado('ESCUELA DE NIVEL INICIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA TÉCNICA"><h3>Escuelas Técnicas</h3><p>Listado de Escuelas Técnicas.</p><button onclick="abrirListado('ESCUELA TÉCNICA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ESCUELA DE COMERCIO"><h3>Escuelas de Comercio</h3><p>Listado de Escuelas de Comercio.</p><button onclick="abrirListado('ESCUELA DE COMERCIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="ADULTOS"><h3>Adultos</h3><p>Listado de Colegios y Escuelas para Adultos.</p><button onclick="abrirListado('ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <div class="carpeta" data-denominacion="ADULTOS"><h3>Jovenes/Adultos</h3><p>Incluye: Comercio, Centros Secundarios y Colegios/Escuelas para Adultos.</p><button onclick="abrirListado('ADULTOS')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <!-- Las siguientes categorías van al final -->
   <div class="carpeta" data-denominacion="ESCUELA DE EDUCACIÓN ESPECIAL"><h3>Escuelas de Educación Especial</h3><p>Listado de Escuelas de Educación Especial.</p><button onclick="abrirListado('ESCUELA DE EDUCACIÓN ESPECIAL')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
-  <div class="carpeta" data-denominacion="CENTRO EDUCATIVO NIVEL SECUNDARIO"><h3>Centro Educativo Nivel Secundario</h3><p>Listado de Centros Educativos Nivel Secundario.</p><button onclick="abrirListado('CENTRO EDUCATIVO NIVEL SECUNDARIO')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
+  <!-- Agrupadas dentro de 'ADULTOS' -->
   <div class="carpeta" data-denominacion="ESCUELA DE JORNADA COMPLETA"><h3>Escuelas de Jornada Completa</h3><p>Listado de Escuelas de Jornada Completa.</p><button onclick="abrirListado('ESCUELA DE JORNADA COMPLETA')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <div class="carpeta" data-denominacion="ESCUELA SECUNDARIA DE ARTE"><h3>Escuelas Secundarias de Arte</h3><p>Listado de Escuelas Secundarias de Arte.</p><button onclick="abrirListado('ESCUELA SECUNDARIA DE ARTE')">Abrir Listado</button><span class="total-carpeta" style="display:block;margin-top:0.7em;font-size:1.08em;color:#56B4C6;font-weight:600;"></span></div>
   <script>
@@ -678,10 +815,8 @@
         'COLEGIO',
         'ESCUELA DE NIVEL INICIAL',
         'ESCUELA DE EDUCACIÓN ESPECIAL',
-        'CENTRO EDUCATIVO NIVEL SECUNDARIO',
         'ESCUELA TÉCNICA',
         'ESCUELA DE JORNADA COMPLETA',
-        'ESCUELA DE COMERCIO',
         'ADULTOS',
         'ESCUELA SECUNDARIA DE ARTE'
       ];
@@ -692,7 +827,13 @@
         denominaciones.forEach(denom => {
           let total = 0;
           if (denom === 'ADULTOS') {
-            total = data.filter(e => e.denominacion === 'COLEGIO PARA ADULTOS' || e.denominacion === 'ESCUELA PARA ADULTOS').length;
+            // ADULTOS agrupa varias denominaciones
+            total = data.filter(e => [
+              'COLEGIO PARA ADULTOS',
+              'ESCUELA PARA ADULTOS',
+              'ESCUELA DE COMERCIO',
+              'CENTRO EDUCATIVO NIVEL SECUNDARIO'
+            ].includes(e.denominacion)).length;
           } else {
             total = data.filter(e => e.denominacion === denom).length;
           }
@@ -742,6 +883,21 @@
             <tr><td colspan='5' style='text-align:center;color:#e5e7eb;'>Seleccione una carpeta para ver los establecimientos.</td></tr>
           </tbody>
         </table>
+        <div style="width:98%;max-width:1400px;display:flex;justify-content:center;gap:0.6rem;margin-top:0.8rem;">
+                <style>
+                  .export-btn{display:inline-flex;gap:0.6rem;align-items:center;padding:0.7em 1.1em;border-radius:8px;border:none;cursor:pointer;font-weight:700;color:#fff;font-size:1.05rem}
+                  .export-btn svg{width:18px;height:18px}
+                  #btn-export-pdf{background:#1B2A41}
+                  #btn-export-xlsx{background:#56B4C6}
+                  .export-btn[disabled]{opacity:0.5;cursor:not-allowed}
+                </style>
+                <button id="btn-export-pdf" class="export-btn" onclick="exportListadoPDF()" title="Generar PDF">
+                  Generar PDF
+                </button>
+                <button id="btn-export-xlsx" class="export-btn" onclick="exportListadoExcel()" title="Generar EXCEL">
+                  Generar EXCEL
+                </button>
+              </div>
       </div>
     </section>
   </div>
@@ -763,9 +919,14 @@
       if (!error && data) {
         // Total establecimientos
         document.getElementById('contador-total').textContent = data.length;
-        // Total carpetas (distintas denominaciones)
-        const totalCarpetas = new Set(data.map(e => (e.denominacion||'').toUpperCase())).size;
-        document.getElementById('contador-carpetas').textContent = totalCarpetas;
+        // Total carpetas (preferir contar las tarjetas definidas en el DOM para reflejar la UI)
+        const tarjetas = document.querySelectorAll('.carpeta');
+        if (tarjetas && tarjetas.length > 0) {
+          document.getElementById('contador-carpetas').textContent = tarjetas.length;
+        } else {
+          const totalCarpetas = new Set(data.map(e => (e.denominacion||'').toUpperCase())).size;
+          document.getElementById('contador-carpetas').textContent = totalCarpetas;
+        }
       }
     } catch (e) {
       // No mostrar error visual
@@ -777,7 +938,7 @@
   const inicio = document.getElementById('inicio');
   if (inicio) inicio.style.display = 'none';
   // Ocultar subtítulo
-  const subtitulo = document.querySelector('div[style*="Consulta los Establecimientos Educativos Estatales"]');
+  const subtitulo = document.getElementById('subtitulo');
   if (subtitulo) subtitulo.style.display = 'none';
   // Ocultar contadores
   const contadores = document.getElementById('contadores-buscador-panel');
@@ -810,11 +971,16 @@
 
     let data = [], error = null;
     if (tipo.toUpperCase() === 'ADULTOS') {
-      // Buscar ambos tipos y unir resultados
+      // Buscar las denominaciones agrupadas para ADULTOS
       const res = await supabaseClient
         .from('establecimientos')
         .select('*')
-        .in('denominacion', ['COLEGIO PARA ADULTOS', 'ESCUELA PARA ADULTOS']);
+        .in('denominacion', [
+          'COLEGIO PARA ADULTOS',
+          'ESCUELA PARA ADULTOS',
+          'ESCUELA DE COMERCIO',
+          'CENTRO EDUCATIVO NIVEL SECUNDARIO'
+        ]);
       data = res.data || [];
       error = res.error;
     } else {
@@ -837,14 +1003,14 @@
       const selectCat = document.getElementById('filtro-categoria-listado');
       const selectReg = document.getElementById('filtro-region-listado');
       if (selectCat && selectReg) {
-        // Categoría
-        const categorias = [...new Set((data||[]).map(e=>e.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-        selectCat.innerHTML = '<option value="">Todas</option>' + categorias.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
-        selectCat.value = '';
-        // Región
-        const regiones = [...new Set((data||[]).map(e=>e.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
-        selectReg.innerHTML = '<option value="">Todas</option>' + regiones.map(reg=>`<option value="${reg}">${reg}</option>`).join('');
-        selectReg.value = '';
+  // Categoría
+  const categorias = [...new Set((data||[]).map(e=>e.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  selectCat.innerHTML = '<option value="">Todas</option>' + categorias.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
+  selectCat.value = '';
+  // Región
+  const regiones = [...new Set((data||[]).map(e=>e.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  selectReg.innerHTML = '<option value="">Todas</option>' + regiones.map(reg=>`<option value="${reg}">${reg}</option>`).join('');
+  selectReg.value = '';
         selectCat.onchange = filtrarYMostrar;
         selectReg.onchange = filtrarYMostrar;
       }
@@ -891,7 +1057,9 @@
         tbody.innerHTML = `<tr><td colspan='5' style='text-align:center;color:#6b7280;'>No se encontraron registros para ${tipoActual}</td></tr>`;
         return;
       }
-      // Resumen arriba de la tabla (solo en el div externo)
+    // Mantener la última lista filtrada para exportaciones
+  window.lastFiltrados = filtrados;
+  // Resumen arriba de la tabla (solo en el div externo)
   // Resumen visual eliminado (deshacer cambio)
   // Actualizar el total en el label
   const totalLabel = document.getElementById('total-listado');
@@ -917,7 +1085,110 @@
           abrirModalDetalle(filtrados[idx]);
         });
       });
+  // Actualizar estado de botones de exportación
+  if (typeof updateExportButtons === 'function') updateExportButtons();
     }
+
+    // Exportar listado a PDF completo usando jsPDF + autoTable, con logo
+    async function exportListadoPDF() {
+      const data = window.lastFiltrados || [];
+      if (!data || data.length === 0) { alert('No hay datos para exportar'); return; }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('landscape');
+
+      // Determinar columnas: usar keys encontradas en el primer objeto (ordenadas)
+      const allKeys = Array.from(new Set(data.flatMap(d => Object.keys(d))));
+      // Priorizar un orden legible si existen estas keys
+      const preferredOrder = ['categoria','region','denominacion','nro','nombre','localidad','departamento','ambito','modalidad','niveles','url_matricula','url_pof','id'];
+      allKeys.sort((a,b)=>{
+        const ia = preferredOrder.indexOf(a) === -1 ? Number.MAX_SAFE_INTEGER : preferredOrder.indexOf(a);
+        const ib = preferredOrder.indexOf(b) === -1 ? Number.MAX_SAFE_INTEGER : preferredOrder.indexOf(b);
+        if (ia !== ib) return ia - ib;
+        return a.localeCompare(b,'es',{sensitivity:'base'});
+      });
+
+      const headers = allKeys.map(k => k.charAt(0).toUpperCase() + k.slice(1));
+      const body = data.map(r => allKeys.map(k => (r[k]===null||typeof r[k]==='undefined') ? '' : String(r[k])));
+
+      // Cargar logo local y convertir a dataURL (fetch->blob preferido para evitar tainted canvas)
+      async function loadImageDataUrl(src) {
+        try {
+          // Intentar fetch + blob
+          const res = await fetch(src);
+          if (res.ok) {
+            const blob = await res.blob();
+            return await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = () => resolve(null);
+              reader.readAsDataURL(blob);
+            });
+          }
+        } catch (e) {
+          // seguir a fallback
+        }
+        // Fallback: Image -> canvas (puede taintearse si CORS bloquea)
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = function() {
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = img.width;
+              canvas.height = img.height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img,0,0);
+              resolve(canvas.toDataURL('image/png'));
+            } catch (err) { resolve(null); }
+          };
+          img.onerror = function(){ resolve(null); };
+          img.src = src;
+        });
+      }
+
+      const logoData = await loadImageDataUrl('LOGO NUEVO COLOR_122003.png');
+
+      // Agregar título y logo
+      doc.setFontSize(14);
+      if (logoData) {
+        // Ajustar tamaño del logo y colocarlo a la izquierda
+        const imgProps = doc.getImageProperties(logoData);
+        const imgW = 36; // mm
+        const imgH = (imgProps.height / imgProps.width) * imgW;
+        doc.addImage(logoData, 'PNG', 14, 8, imgW, imgH);
+        doc.text('Listado de establecimientos', 14 + imgW + 6, 16);
+      } else {
+        doc.text('Listado de establecimientos', 14, 16);
+      }
+
+      // Generar tabla con autoTable
+      doc.autoTable({ startY: 28, head: [headers], body: body, styles: { fontSize: 9, cellPadding: 3 }, headStyles: { fillColor: [27,42,65], textColor: 255 } });
+      doc.save('listado-establecimientos.pdf');
+    }
+
+    // Exportar listado a Excel (XLSX) usando SheetJS (xlsx)
+    function exportListadoExcel() {
+      const data = window.lastFiltrados || [];
+      if (!data || data.length === 0) { alert('No hay datos para exportar'); return; }
+      const ws_data = [ ['Categoría','Región','Denominación','N°','Nombre'] ];
+      data.forEach(r => ws_data.push([r.categoria||'', r.region||'', r.denominacion||'', r.nro||'', r.nombre||'']));
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      XLSX.utils.book_append_sheet(wb, ws, 'Listado');
+      XLSX.writeFile(wb, 'listado-establecimientos.xlsx');
+    }
+
+    function updateExportButtons(){
+      const pdfBtn = document.getElementById('btn-export-pdf');
+      const xlsxBtn = document.getElementById('btn-export-xlsx');
+      const has = (window.lastFiltrados && window.lastFiltrados.length>0);
+      if (pdfBtn) pdfBtn.disabled = !has;
+      if (xlsxBtn) xlsxBtn.disabled = !has;
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      updateExportButtons();
+    });
 
     function cargarCategorias() {
       const select = document.getElementById('filtro-categoria');
@@ -1026,7 +1297,7 @@
     function mostrarVistaPrincipal() {
   const inicio = document.getElementById('inicio');
   if (inicio) inicio.style.display = '';
-  const subtitulo = document.querySelector('div[style*="Consulta los Establecimientos Educativos Estatales"]');
+  const subtitulo = document.getElementById('subtitulo');
   if (subtitulo) subtitulo.style.display = '';
   const contadores = document.getElementById('contadores-buscador-panel');
   if (contadores) contadores.style.display = '';
@@ -1036,5 +1307,9 @@
   if (listado) listado.style.display = 'none';
 }
   </script>
+  <!-- Librerías para exportar -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 </body>
 </html>

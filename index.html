@@ -343,7 +343,7 @@
   <div class="login-group" style="width:100%;max-width:320px;text-align:center;">
   <label for="pin-login" style="display:block;font-weight:400;color:#1B2A41;margin-bottom:0.9rem;">Ingrese su PIN de 4 dígitos:</label>
   <!-- helper text intentionally removed per request -->
-  <input type="password" id="pin-login" placeholder="****" style="width:100%;padding:0.6em 0.6em;border-radius:20px;border:1.5px solid #b2ebf2;font-size:1.08em;background:#e0f7fa;color:#1B2A41;margin-bottom:0.9rem;text-align:center;font-family: 'Courier New', monospace;">
+  <input type="password" id="pin-login" placeholder="****" style="width:100%;height:44px;line-height:44px;padding:0 0.9em;border-radius:20px;border:1.5px solid #b2ebf2;font-size:1.02em;background:#e0f7fa;color:#1B2A41;margin-bottom:0.9rem;text-align:center;font-family: 'Courier New', monospace;box-sizing:border-box;">
   </div>
   <button id="btn-login" style="background:#56B4C6;color:white;border:none;padding:0.7em 2.2em;border-radius:10px;font-size:1.08em;font-weight:600;cursor:pointer;">Acceder</button>
   <div id="login-error" style="color:#dc2626;font-weight:600;margin-top:1em;display:none;"></div>
@@ -396,6 +396,8 @@
   #pin-login::-moz-placeholder { text-align:center; letter-spacing:0.9em; }
   #pin-login:-ms-input-placeholder { text-align:center; letter-spacing:0.9em; }
   #pin-login:-moz-placeholder { text-align:center; letter-spacing:0.9em; }
+  /* Force vertical centering for masked chars */
+  #pin-login, #pin-login::-webkit-input-placeholder { height:44px; line-height:44px; }
 </style>
 </style>
 

@@ -1187,17 +1187,36 @@ function mostrarElementosPorRol() {
       let imgW = 0, imgH = 0, imgX = 0;
       if (logoData) {
         const imgProps = doc.getImageProperties(logoData);
-        // Usar un ancho relativo a la página para evitar mezcla de unidades (ej. 18% del ancho)
-        imgW = Math.min(pageWidth * 0.22, imgProps.width);
+        // Usar un ancho fijo en mm (36) como antes para mantener consistencia entre páginas
+        imgW = 36; // mm
         imgH = (imgProps.height / imgProps.width) * imgW;
         imgX = (pageWidth - imgW) / 2; // centrar horizontalmente
       }
 
-      // Reservar espacio para el encabezado (padding superior + imagen + padding inferior)
+      // Reservar espacio para el encabezado: restauramos el comportamiento anterior
+      // Header fijo basado en la altura de la imagen o un valor por defecto (28mm)
       const headerHeight = logoData ? (8 + imgH + 8) : 28;
 
-      // Generar tabla con autoTable dejando espacio superior para el encabezado
-      doc.autoTable({ startY: headerHeight, head: [headers], body: body, styles: { fontSize: 9, cellPadding: 3 }, headStyles: { fillColor: [27,42,65], textColor: 255 } });
+      // Generar tabla con autoTable dejando espacio superior fijo para el encabezado en todas las páginas
+      // Usar theme 'grid' para mostrar cuadrícula y aplicar color institucional en encabezado y bordes
+      doc.autoTable({
+        startY: headerHeight,
+        margin: { top: headerHeight },
+        head: [headers],
+        body: body,
+        theme: 'grid',
+        styles: {
+          fontSize: 9,
+          cellPadding: 3,
+          halign: 'left',
+          valign: 'middle',
+          textColor: 50,
+          lineColor: [27,42,65],
+          lineWidth: 0.3
+        },
+        headStyles: { fillColor: [27,42,65], textColor: 255, halign: 'center' },
+        alternateRowStyles: { fillColor: [245,247,248] }
+      });
 
       // Añadir encabezado (logo + título) y pie (fecha y paginado) en cada página
       const pageCount = doc.internal.getNumberOfPages();
@@ -1209,13 +1228,9 @@ function mostrarElementosPorRol() {
           try {
             doc.addImage(logoData, 'PNG', imgX, 8, imgW, imgH);
           } catch (err) {
-            // Si por alguna razón addImage falla en esta página, ignorar la imagen pero seguir con el título
+            // Si por alguna razón addImage falla en esta página, ignorar la imagen
           }
-          doc.setFontSize(14);
-          doc.text('Listado de establecimientos', pageWidth / 2, 8 + imgH + 6, { align: 'center' });
-        } else {
-          doc.setFontSize(14);
-          doc.text('Listado de establecimientos', pageWidth / 2, 16, { align: 'center' });
+          // No dibujar título (usuario solicitó eliminar el texto del encabezado)
         }
         // Pie de página: fecha y numeración
         doc.setFontSize(9);

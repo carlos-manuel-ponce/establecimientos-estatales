@@ -1115,15 +1115,20 @@ function mostrarElementosPorRol() {
       const doc = new jsPDF('landscape');
 
       // Determinar columnas: usar keys encontradas en el primer objeto (ordenadas)
-      const allKeys = Array.from(new Set(data.flatMap(d => Object.keys(d))));
+      let allKeys = Array.from(new Set(data.flatMap(d => Object.keys(d))));
+      // Excluir campos que no se quieren en el sistema/PDF
+      const exclude = ['id','sector'];
       // Priorizar un orden legible si existen estas keys
-      const preferredOrder = ['categoria','region','denominacion','nro','nombre','localidad','departamento','ambito','modalidad','niveles','url_matricula','url_pof','id'];
+      const preferredOrder = ['categoria','region','denominacion','nro','nombre','localidad','departamento','ambito','modalidad','niveles','url_matricula','url_pof'];
       allKeys.sort((a,b)=>{
         const ia = preferredOrder.indexOf(a) === -1 ? Number.MAX_SAFE_INTEGER : preferredOrder.indexOf(a);
         const ib = preferredOrder.indexOf(b) === -1 ? Number.MAX_SAFE_INTEGER : preferredOrder.indexOf(b);
         if (ia !== ib) return ia - ib;
         return a.localeCompare(b,'es',{sensitivity:'base'});
       });
+
+      // Filtrar claves excluidas
+      allKeys = allKeys.filter(k => !exclude.includes(k));
 
       const headers = allKeys.map(k => k.charAt(0).toUpperCase() + k.slice(1));
       const body = data.map(r => allKeys.map(k => (r[k]===null||typeof r[k]==='undefined') ? '' : String(r[k])));
@@ -1164,23 +1169,55 @@ function mostrarElementosPorRol() {
         });
       }
 
-      const logoData = await loadImageDataUrl('LOGO NUEVO COLOR_122003.png');
-
-      // Agregar título y logo
-      doc.setFontSize(14);
-      if (logoData) {
-        // Ajustar tamaño del logo y colocarlo a la izquierda
-        const imgProps = doc.getImageProperties(logoData);
-        const imgW = 36; // mm
-        const imgH = (imgProps.height / imgProps.width) * imgW;
-        doc.addImage(logoData, 'PNG', 14, 8, imgW, imgH);
-        doc.text('Listado de establecimientos', 14 + imgW + 6, 16);
-      } else {
-        doc.text('Listado de establecimientos', 14, 16);
+      // Intentar cargar logo principal; si falla, probar una alternativa
+      let logoData = await loadImageDataUrl('LOGO NUEVO COLOR_122003.png');
+      if (!logoData) {
+        // intentar otra variante del logo que está en el repo
+        logoData = await loadImageDataUrl('LOGO - MINISTERIO_032459.png');
       }
 
-      // Generar tabla con autoTable
-      doc.autoTable({ startY: 28, head: [headers], body: body, styles: { fontSize: 9, cellPadding: 3 }, headStyles: { fillColor: [27,42,65], textColor: 255 } });
+      // Preparar métricas de página y logo (usar las mismas unidades que doc)
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      let imgW = 0, imgH = 0, imgX = 0;
+      if (logoData) {
+        const imgProps = doc.getImageProperties(logoData);
+        // Usar un ancho relativo a la página para evitar mezcla de unidades (ej. 18% del ancho)
+        imgW = Math.min(pageWidth * 0.22, imgProps.width);
+        imgH = (imgProps.height / imgProps.width) * imgW;
+        imgX = (pageWidth - imgW) / 2; // centrar horizontalmente
+      }
+
+      // Reservar espacio para el encabezado (padding superior + imagen + padding inferior)
+      const headerHeight = logoData ? (8 + imgH + 8) : 28;
+
+      // Generar tabla con autoTable dejando espacio superior para el encabezado
+      doc.autoTable({ startY: headerHeight, head: [headers], body: body, styles: { fontSize: 9, cellPadding: 3 }, headStyles: { fillColor: [27,42,65], textColor: 255 } });
+
+      // Añadir encabezado (logo + título) y pie (fecha y paginado) en cada página
+      const pageCount = doc.internal.getNumberOfPages();
+      const generatedAt = new Date().toLocaleString();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        // Encabezado
+        if (logoData) {
+          try {
+            doc.addImage(logoData, 'PNG', imgX, 8, imgW, imgH);
+          } catch (err) {
+            // Si por alguna razón addImage falla en esta página, ignorar la imagen pero seguir con el título
+          }
+          doc.setFontSize(14);
+          doc.text('Listado de establecimientos', pageWidth / 2, 8 + imgH + 6, { align: 'center' });
+        } else {
+          doc.setFontSize(14);
+          doc.text('Listado de establecimientos', pageWidth / 2, 16, { align: 'center' });
+        }
+        // Pie de página: fecha y numeración
+        doc.setFontSize(9);
+        const footerText = `Generado: ${generatedAt} — Página ${i} de ${pageCount}`;
+        doc.text(footerText, pageWidth / 2, pageHeight - 8, { align: 'center' });
+      }
+
       doc.save('listado-establecimientos.pdf');
     }
 
@@ -1188,8 +1225,9 @@ function mostrarElementosPorRol() {
     function exportListadoExcel() {
       const data = window.lastFiltrados || [];
       if (!data || data.length === 0) { alert('No hay datos para exportar'); return; }
-      const ws_data = [ ['Categoría','Región','Denominación','N°','Nombre'] ];
-      data.forEach(r => ws_data.push([r.categoria||'', r.region||'', r.denominacion||'', r.nro||'', r.nombre||'']));
+  // Excluir id y sector del Excel también
+  const ws_data = [ ['Categoría','Región','Denominación','N°','Nombre'] ];
+  data.forEach(r => ws_data.push([r.categoria||'', r.region||'', r.denominacion||'', r.nro||'', r.nombre||'']));
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.aoa_to_sheet(ws_data);
       XLSX.utils.book_append_sheet(wb, ws, 'Listado');

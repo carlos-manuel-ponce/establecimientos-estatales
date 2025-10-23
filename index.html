@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DGE - Establecimientos Estatales</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <script src="./inline-logo.js"></script>
   <style>
     :root {
         --azul-institucional: #1B2A41;
@@ -1169,11 +1170,15 @@ function mostrarElementosPorRol() {
         });
       }
 
-      // Intentar cargar logo principal; si falla, probar una alternativa
-      let logoData = await loadImageDataUrl('LOGO NUEVO COLOR_122003.png');
+      // Preferir una variable inline si fue inyectada en la página (evita problemas con file:// y CORS)
+      let logoData = (window.INLINE_LOGO_DATA_URL && String(window.INLINE_LOGO_DATA_URL).startsWith('data:image')) ? window.INLINE_LOGO_DATA_URL : null;
       if (!logoData) {
-        // intentar otra variante del logo que está en el repo
-        logoData = await loadImageDataUrl('LOGO - MINISTERIO_032459.png');
+        // Intentar cargar logo principal; si falla, probar otra alternativa
+        logoData = await loadImageDataUrl('LOGO NUEVO COLOR_122003.png');
+        if (!logoData) {
+          // intentar otra variante del logo que está en el repo
+          logoData = await loadImageDataUrl('LOGO - MINISTERIO_032459.png');
+        }
       }
 
       // Preparar métricas de página y logo (usar las mismas unidades que doc)
